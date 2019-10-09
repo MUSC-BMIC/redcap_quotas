@@ -1,0 +1,21 @@
+{
+ "name": "QuotaConfig",
+ "namespace": "MUSC\\QuotaConfig", 
+ "description": "This is a description of the module, and will be displayed below the module name in the user interface.",
+ "authors": [
+     {
+          "name": "Jon Snow",
+          "email": "jon.snow@vumc.org",
+          "institution": "MUSC"
+      }
+  ],
+
+  "project-settings": [
+    {
+      "key": "quota-message",
+      "name": "<b>What is your favorite Halloween candy?</b>",
+      "required": false,
+      "type": "field-list"
+    }
+  ]
+}
