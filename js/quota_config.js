@@ -10,6 +10,12 @@ $(document).ready(function() {
     console.log(quotaConfigSettings);
     console.log(quotaConfigFields);
 
+    $(document).ajaxComplete(function() {
+      $modal.find("select[name*='field-name']").each(function() {
+        $(this).trigger('change');
+      });
+    });
+
     $(document).on('change', "select[name*='field-name']", function() {
       selectedVal = $(this).val();
       if (quotaConfigFields.hasOwnProperty(selectedVal)) {
