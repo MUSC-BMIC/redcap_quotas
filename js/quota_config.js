@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var $modal = $('#external-modules-configure-modal');
+
   $modal.on('show.bs.modal', function() {
 
     // Making sure we are overriding this modules's modal only.
@@ -12,7 +13,9 @@ $(document).ready(function() {
 
     $(document).ajaxComplete(function() {
       $modal.find("select[name*='field-name']").each(function() {
+        quotaConfigSettings.useOldVal = "true"
         $(this).trigger('change');
+        quotaConfigSettings.useOldVal = "false"
       });
     });
 
@@ -36,8 +39,16 @@ $(document).ready(function() {
 
           $.each(options, function(index, value) {
             option = value.split(", ");
-            newSelect += '<option value=' + option[0] + '>' + option[1] + '</option>';
+
+            if (quotaConfigSettings.useOldVal == 'true' && oldInput.val() == option[0]) {
+              newSelect += '<option value=' + option[0] + ' selected=selected>' + option[1] + '</option>';
+            }
+            else {
+              newSelect += '<option value=' + option[0] + '>' + option[1] + '</option>';
+            }
+
           });
+
           newSelect += '</select>';
 
           oldInput.replaceWith(newSelect);
@@ -47,7 +58,13 @@ $(document).ready(function() {
         if (['calc', 'text', 'notes'].includes(quotaConfigFields[selectedVal].field_type)) {
           console.log("Need to convert to input");
 
-          newInput = '<input type="text" class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
+          if (quotaConfigSettings.useOldVal == 'true') {
+            newInput = '<input type="text" class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '" value="' + oldInput.val() + '">';
+          }
+          else {
+            newInput = '<input type="text" class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
+          }
+
           oldInput.replaceWith(newInput);
         }
       }

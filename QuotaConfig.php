@@ -9,7 +9,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
   {
     if (strpos(PAGE, 'ExternalModules/manager/project.php') !== false)
     {
-      $this->setJsSettings('quotaConfigSettings', array('modulePrefix' => $this->PREFIX));
+      $this->setJsSettings('quotaConfigSettings', array('modulePrefix' => $this->PREFIX, 'useOldVal' => 'false'));
 
       // Get all field variable names in project
       // Get the data dictionary for the current project in array format
