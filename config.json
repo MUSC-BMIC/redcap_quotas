@@ -27,15 +27,14 @@
         "name": "Field name",
         "required": true,
         "type": "field-list"
-        },
-        {
-         "key": "field-value",
-         "name": "Field value",
-         "type": "custom",
-         "source": "js/quota_config.js",
-         "functionName": "QuotaConfig.fieldValueSelector"
-        }
-       ]
+      },
+      {
+       "key": "field-value",
+       "name": "Field value",
+       "type": "text",
+       "required": true
+      }
+     ]
     }
   ]
 }

@@ -9,35 +9,23 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
   {
     if (strpos(PAGE, 'ExternalModules/manager/project.php') !== false)
     {
+      $this->setJsSettings('quotaConfigSettings', array('modulePrefix' => $this->PREFIX));
+
       // Get all field variable names in project
       // Get the data dictionary for the current project in array format
-$dd_array = REDCap::getDataDictionary('array');
+      $dd_array = REDCap::getDataDictionary('array');
+      $this->setJsSettings('quotaConfigFields', $dd_array);
 
-// Loop through each field and do something with each
-foreach ($dd_array as $field_name=>$field_attributes)
-{
-  echo($field_name);
-  print_r($field_attributes);
-    // Do something with this field if it is a checkbox field
-    if ($field_attributes['field_type'] == "checkbox") {
-        // Something
-
+      $this->includeJs('js/quota_config.js');
     }
-}
-  $fields = REDCap::getFieldNames();
-
-  // Loop through each field and do something with each
-  foreach ($fields as $this_field) {
-    print($this_field);
-      // Do something with $this_field
-
   }
-      print("What's up");
-      print("What's up");
-      print("What's up");
-      print("What's up");
-      print("What's up");
-    }
+
+  protected function setJsSettings($var, $settings) {
+    echo '<script>' . $var . ' = ' . json_encode($settings) . ';</script>';
+  }
+
+  protected function includeJs($path) {
+    echo '<script src="' . $this->getUrl($path) . '"></script>';
   }
 }
 
