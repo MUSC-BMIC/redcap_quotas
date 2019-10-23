@@ -11,10 +11,35 @@
   ],
 
   "permissions": [
-    "redcap_every_page_top"
+    "redcap_every_page_top", 
+    "redcap_data_entry_form_top"
   ],
 
   "project-settings": [
+    {
+      "key": "screen-fail-indicator",
+      "name": "Screen Fail Indicator",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "included-in-quoat-n",
+      "name": "Included in Total N Count Indicator",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+       "key": "accepted-message",
+       "name": "Custom Accepted into Study Message",
+       "type": "textarea",
+       "required": true
+    },
+    {
+       "key": "rejected-message",
+       "name": "Custom Rejected from Study Message",
+       "type": "textarea",
+       "required": true
+    },
     {
       "key": "quota-n",
       "name": "Total N",
