@@ -5,7 +5,7 @@
  "authors": [
      {
           "name": "Andrew Cates",
-          "email": "catesa@musc.edu",
+          "email": "catesa@muconfig.jsonsc.edu",
           "institution": "MUSC"
       }
   ],
@@ -17,56 +17,64 @@
 
   "project-settings": [
     {
-      "key": "screen-fail-indicator",
+      "key": "screen_fail_indicator",
       "name": "Screen Fail Indicator",
       "required": true,
       "type": "field-list"
     },
     {
-      "key": "included-in-quoat-n",
+      "key": "included_in_quoat_n",
       "name": "Included in Total N Count Indicator",
       "required": true,
       "type": "field-list"
     },
     {
-       "key": "accepted-message",
-       "name": "Custom Accepted into Study Message",
+       "key": "accepted_message",
+       "name": "Acceptance Message",
        "type": "textarea",
-       "required": true
+       "required": true,
+       "default": "Accepted into Project"
     },
     {
-       "key": "rejected-message",
-       "name": "Custom Rejected from Study Message",
+       "key": "rejected_message",
+       "name": "Screen Fail Message",
        "type": "textarea",
-       "required": true
+       "required": true,
+       "default": "Project is full at this time."
     },
     {
-      "key": "quota-n",
+      "key": "quota_n",
       "name": "Total N",
       "type": "text",
+      "required": true
+    },
+    {
+      "key": "quota_n_enforced",
+      "name": "Enforce Total",
+      "type": "checkbox",
       "required": false
     },
     {
-     "key": "quote-setting",
+     "key": "quote_setting",
      "name": "Quota",
      "required": true,
      "type": "sub_settings",
      "repeatable":true,
      "sub_settings":[
       {
-        "key": "field-name",
+        "key": "field_name",
         "name": "Name",
         "required": true,
         "type": "field-list"
       },
       {
-       "key": "field-selected",
+       "key": "field_selected",
        "name": "Value",
        "type": "text",
        "required": true
       },
       {
-       "key": "field-operator",
+       "key": "field_operator",
        "name": "Operator",
        "type": "dropdown",
        "choices": [
@@ -98,13 +106,13 @@
        "required": true
       },
       {
-        "key": "field-quantity",
+        "key": "field_quantity",
         "name": "Quantity",
         "type": "text",
         "required": "true"
       },
       {
-       "key": "field-quantifier",
+       "key": "field_quantifier",
        "name": "Quantity Type",
        "type": "dropdown",
        "choices": [
