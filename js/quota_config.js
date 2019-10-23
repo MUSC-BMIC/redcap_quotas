@@ -12,14 +12,14 @@ $(document).ready(function() {
     console.log(quotaConfigFields);
 
     $(document).ajaxComplete(function() {
-      $modal.find("select[name*='field-name']").each(function() {
+      $modal.find("select[name*='field_name']").each(function() {
         quotaConfigSettings.useOldVal = "true"
         $(this).trigger('change');
         quotaConfigSettings.useOldVal = "false"
       });
     });
 
-    $(document).on('change', "select[name*='field-name']", function() {
+    $(document).on('change', "select[name*='field_name']", function() {
       selectedVal = $(this).val();
       if (quotaConfigFields.hasOwnProperty(selectedVal)) {
         inputTd = $(this).closest("tr").next("tr").find("td.external-modules-input-td")
@@ -30,7 +30,7 @@ $(document).ready(function() {
         console.log("Config for Val: ", quotaConfigFields[selectedVal]);
 
         // dropdowns and radio buttons
-        if (['dropdown', 'radio'].includes(quotaConfigFields[selectedVal].field_type)) {
+        if (['dropdown', 'radio'].indexOf(quotaConfigFields[selectedVal].field_type) != -1) {
           options = quotaConfigFields[selectedVal].select_choices_or_calculations.split(" | ");
           console.log("Need to convert to select");
           console.log("Options for Select: ", options);
@@ -55,7 +55,7 @@ $(document).ready(function() {
         }
 
         // text, notes, and calculated fields
-        if (['calc', 'text', 'notes'].includes(quotaConfigFields[selectedVal].field_type)) {
+        if (['calc', 'text', 'notes'].indexOf(quotaConfigFields[selectedVal].field_type) != -1) {
           console.log("Need to convert to input");
 
           if (quotaConfigSettings.useOldVal == 'true') {
