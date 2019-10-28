@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var $modal = $('#external-modules-configure-modal');
 
   $modal.on('show.bs.modal', function() {
 
