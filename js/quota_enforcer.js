@@ -1,19 +1,30 @@
 $(document).ready(function() {
-  var $quota_exceeded = false;
-
-  $(document).on('submit', '#form', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
+  
+  $("#submit-btn-saverecord")[0].onclick = function(e) {
+    $quota_met = false;
+    $.ajaxSetup({
+      async: false
+    });
     $.get(quotaEnforcementSettings.url, $('form').serialize(), function(data) {
-      quotas = JSON.parse(data);
-      console.log(quotas);
-      if (quotas['totalNMet'] == true) {
-        $quota_exceeded = true;
-        console.log('stop');
+      quota_met = data;
+      console.log(quota_met);
+      if (quota_met == "true") {
+        $quota_met = true;
+        $('#quota-failure-modal').modal('show');
+        //we want to save failures too, with a hidden field
       }
     });
-
-    return false;
-  });
+    $.ajaxSetup({
+      async: true
+    });
+    if ($quota_met == true) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
+    else {
+      //stop the submit, show success modal, then proceed submitting
+      dataEntrySubmit(this);
+    }
+  };
 });
