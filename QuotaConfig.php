@@ -22,27 +22,21 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
 
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance)
   {
+    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true)));
+    $this->includeJs('js/quota_enforcer.js');
+  }
+
+  function current_quota_for($params)
+  {
     $config = $this->getProjectSettings();
 
-    // extract creates local variables (eg. $qc_quota_n), you still have to use ['value'] to get the value of the variable
-    extract($config, EXTR_PREFIX_ALL, 'qc');
-    print "<div>";
-    print "<br />";
-    print "<br />";
-    print "<br />";
-    print_r($config);
-    print "<br />";
-    print "<br />";
-    print $qc_quota_n['value'];
-    print "<br />";
-    print $qc_quota_n_enforced['value'];
-    print_r($qc_field_name['value'][0]);
-    print "<br />";
-    print "<br />";
-    print "<br />";
-    print "</div>";
+    $total_n = $config['quota_n']['value'];
+    $total_n_enforced = $config['quota_n_enforced']['value'];
 
+    $data = REDCap::getData('array');
 
+    $total_n_met = ($total_n_enforced == true) && (count($data) >= $total_n);
+    return array('totalNMet' => $total_n_met, 'totalN' => $total_n, 'totalNEnforced' => $total_n_enforced);
   }
 
   protected function setJsSettings($var, $settings) {

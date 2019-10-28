@@ -9,7 +9,7 @@
           "institution": "MUSC"
       }
   ],
-
+  "no-auth-pages": ["quota_enforcer"],
   "permissions": [
     "redcap_every_page_top",
     "redcap_data_entry_form_top"
