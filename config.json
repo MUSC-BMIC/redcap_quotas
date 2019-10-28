@@ -29,14 +29,14 @@
       "type": "field-list"
     },
     {
-       "key": "accepted_message",
+       "key": "accepted",
        "name": "Acceptance Message",
        "type": "textarea",
        "required": true,
        "default": "Accepted into Project"
     },
     {
-       "key": "rejected_message",
+       "key": "rejected",
        "name": "Screen Fail Message",
        "type": "textarea",
        "required": true,
