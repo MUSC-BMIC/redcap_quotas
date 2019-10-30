@@ -23,9 +23,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance)
   {
     $config = $this->getProjectSettings();
-    extract($config, EXTR_PREFIX_ALL, 'qc');
-    ?>
 
+    echo '
     <div id="quota-modal" class="modal fade" role="dialog" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -35,19 +34,14 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
           </div>
           <div class="modal-body"></div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-defaultrc" id='btnCloseCodesModalDelete' data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-defaultrc" id="btnCloseCodesModalDelete" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
-    </div>
+    </div>';
 
-    <?php
-
-    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true)));
+    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true), 'accepted' => $config['accepted']['value'], 'rejected' => $config['rejected']['value']));
     $this->includeJs('js/quota_enforcer.js');
-
-    $config = $this->getProjectSettings();
-    $this->setJsSettings('quotaConfigMessages', array('accepted' => $config['accepted'], 'rejected' => $config['rejected']));
   }
 
   function current_quota_for($params)

@@ -9,8 +9,8 @@ $(document).ready(function() {
       quota_met = data;
       console.log(quota_met);
 
-      $message = (quota_met == "true") ? quotaConfigMessages['rejected'] : quotaConfigMessages['accepted'];
-      $("#quota-modal .modal-body").html($message.value);
+      $message = (quota_met == "true") ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
+      $("#quota-modal .modal-body").html($message);
       $('#quota-modal').modal('show');
 
       e.preventDefault();
