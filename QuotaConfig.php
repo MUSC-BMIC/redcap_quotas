@@ -40,7 +40,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
       </div>
     </div>';
 
-    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true), 'accepted' => $config['accepted']['value'], 'rejected' => $config['rejected']['value']));
+    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true), 'accepted' => $config['accepted']['value'], 'rejected' => $config['rejected']['value'], 'screen_fail_indicator' => $config['screen_fail_indicator']['value']));
     $this->includeJs('js/quota_enforcer.js');
   }
 
