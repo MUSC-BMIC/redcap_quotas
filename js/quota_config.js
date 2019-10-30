@@ -8,9 +8,6 @@ $(document).ready(function() {
         return;
     }
 
-    console.log(quotaConfigSettings);
-    console.log(quotaConfigFields);
-
     $(document).ajaxComplete(function() {
       $modal.find("select[name*='field_name']").each(function() {
         quotaConfigSettings.useOldVal = "true"
@@ -25,16 +22,9 @@ $(document).ready(function() {
         inputTd = $(this).closest("tr").next("tr").find("td.external-modules-input-td")
         oldInput = inputTd.find("input, select, textarea");
 
-        console.log("Input TD: ", inputTd);
-        console.log("Selected Val: ", selectedVal);
-        console.log("Config for Val: ", quotaConfigFields[selectedVal]);
-
         // dropdowns and radio buttons
         if (['dropdown', 'radio'].indexOf(quotaConfigFields[selectedVal].field_type) != -1) {
           options = quotaConfigFields[selectedVal].select_choices_or_calculations.split(" | ");
-          console.log("Need to convert to select");
-          console.log("Options for Select: ", options);
-
           newSelect = '<select class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
 
           $.each(options, function(index, value) {
@@ -56,7 +46,6 @@ $(document).ready(function() {
 
         // text, notes, and calculated fields
         if (['calc', 'text', 'notes'].indexOf(quotaConfigFields[selectedVal].field_type) != -1) {
-          console.log("Need to convert to input");
 
           if (quotaConfigSettings.useOldVal == 'true') {
             newInput = '<input type="text" class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '" value="' + oldInput.val() + '">';

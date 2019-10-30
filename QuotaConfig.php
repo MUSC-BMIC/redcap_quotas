@@ -23,26 +23,65 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance)
   {
     $config = $this->getProjectSettings();
-
-    // extract creates local variables (eg. $qc_quota_n), you still have to use ['value'] to get the value of the variable
     extract($config, EXTR_PREFIX_ALL, 'qc');
-    print "<div>";
-    print "<br />";
-    print "<br />";
-    print "<br />";
-    print_r($config);
-    print "<br />";
-    print "<br />";
-    print $qc_quota_n['value'];
-    print "<br />";
-    print $qc_quota_n_enforced['value'];
-    print_r($qc_field_name['value'][0]);
-    print "<br />";
-    print "<br />";
-    print "<br />";
-    print "</div>";
+    ?>
+    <div id="quota-success-modal" class="modal fade" role="dialog" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Eligibility <span class="module-name"></span></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <?php
+            print "<div>";
+            print $qc_accepted['value'];
+            print "</div>";
+            ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="quota-failure-modal" class="modal fade" role="dialog" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Eligibility <span class="module-name"></span></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <?php
+            print "<div>";
+            print $qc_rejected['value'];
+            print "</div>";
+            ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <?php
 
+    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true)));
+    $this->includeJs('js/quota_enforcer.js');
+  }
 
+  function current_quota_for($params)
+  {
+    $config = $this->getProjectSettings();
+
+    $total_n = $config['quota_n']['value'];
+    $total_n_enforced = $config['quota_n_enforced']['value'];
+
+    $data = REDCap::getData('array');
+
+    $total_n_met = ($total_n_enforced == true) && (count($data) >= $total_n);
+
+    // another quota check
+    // $dob_quoata = true;
+
+    // $quota_met = $total_n_met || $dob_quota;
+    $quota_met = $total_n_met;
+    return $quota_met;
   }
 
   protected function setJsSettings($var, $settings) {
