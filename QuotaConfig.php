@@ -25,44 +25,29 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
     $config = $this->getProjectSettings();
     extract($config, EXTR_PREFIX_ALL, 'qc');
     ?>
-    <div id="quota-success-modal" class="modal fade" role="dialog" data-backdrop="static">
+
+    <div id="quota-modal" class="modal fade" role="dialog" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Eligibility <span class="module-name"></span></h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
-          <div class="modal-body">
-            <?php
-            print "<div>";
-            print $qc_accepted['value'];
-            print "</div>";
-            ?>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-defaultrc" id='btnCloseCodesModalDelete' data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
-    <div id="quota-failure-modal" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Eligibility <span class="module-name"></span></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <?php
-            print "<div>";
-            print $qc_rejected['value'];
-            print "</div>";
-            ?>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <?php
 
     $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true)));
     $this->includeJs('js/quota_enforcer.js');
+
+    $config = $this->getProjectSettings();
+    $this->setJsSettings('quotaConfigMessages', array('accepted' => $config['accepted'], 'rejected' => $config['rejected']));
   }
 
   function current_quota_for($params)
