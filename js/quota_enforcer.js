@@ -13,6 +13,15 @@ $(document).ready(function() {
       $("#quota-modal .modal-body").html($message);
       $('#quota-modal').modal('show');
 
+      if (quota_met == 'true') {
+        // Set screen_fail_indicator to true
+        $("#" + quotaEnforcementSettings['screen_fail_indicator'] + "-tr .data :input").val(1);
+      }
+      else {
+        // Set screen_fail_indicator to false
+        $("#" + quotaEnforcementSettings['screen_fail_indicator'] + "-tr .data :input").val(0);
+      }
+
       e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
