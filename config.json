@@ -28,9 +28,8 @@
       "type": "field-list"
     },
     {
-      "key": "included_in_quoat_n",
+      "key": "included_in_quota_n",
       "name": "Included in Total N Count Indicator",
-      "required": true,
       "type": "field-list"
     },
     {
@@ -42,7 +41,7 @@
     },
     {
        "key": "rejected",
-       "name": "Screen Fail Message",
+       "name": "Quota Met Message",
        "type": "textarea",
        "required": true,
        "default": "Project is full at this time."

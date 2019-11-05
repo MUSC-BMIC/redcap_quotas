@@ -40,7 +40,14 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
       </div>
     </div>';
 
-    $this->setJsSettings('quotaEnforcementSettings', array('url' => $this->getUrl('quota_enforcer.php', true, true), 'accepted' => $config['accepted']['value'], 'rejected' => $config['rejected']['value'], 'quota_met_indicator' => $config['quota_met_indicator']['value']));
+    $qes = array(
+      'url' => $this->getUrl('quota_enforcer.php', true, true),
+      'accepted' => $config['accepted']['value'],
+      'rejected' => $config['rejected']['value'],
+      'quota_met_indicator' => $config['quota_met_indicator']['value']
+    );
+
+    $this->setJsSettings('quotaEnforcementSettings', $qes);
     $this->includeJs('js/quota_enforcer.js');
   }
 
@@ -51,9 +58,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
     $total_n = $config['quota_n']['value'];
     $total_n_enforced = $config['quota_n_enforced']['value'];
 
-    $data = REDCap::getData('array');
-
-    $total_n_met = ($total_n_enforced == true) && (count($data) >= $total_n);
+    $total_data_count = $this->dataCount($config['included_in_quota_n']['value']);
+    $total_n_met = ($total_n_enforced == true) && ($total_data_count >= $total_n);
 
     // another quota check
     // $dob_quoata = true;
@@ -61,6 +67,19 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
     // $quota_met = $total_n_met || $dob_quota;
     $quota_met = $total_n_met;
     return $quota_met;
+  }
+
+  protected function dataCount($included_in_quota_n) {
+    // if we set a variable to indicate the record should be included in the total_n count, use it to filter the data returned
+    if ($included_in_quota_n == '') {
+      $params = array('return_format' => 'array', 'fields' => array('record_id'));
+      $data = REDCap::getData($params);
+      return count($data);
+    } else {
+      $params = array('return_format' => 'array', 'filterLogic' => "[$included_in_quota_n] = '1'", 'fields' => array('record_id'));
+      $data = REDCap::getData($params);
+      return count($data);
+    };
   }
 
   protected function setJsSettings($var, $settings) {
