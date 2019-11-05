@@ -14,12 +14,12 @@ $(document).ready(function() {
       $('#quota-modal').modal('show');
 
       if (quota_met == 'true') {
-        // Set screen_fail_indicator to true
-        $("#" + quotaEnforcementSettings['screen_fail_indicator'] + "-tr .data :input").val(1);
+        // Set quota_met_indicator to true
+        $("#" + quotaEnforcementSettings['quota_met_indicator'] + "-tr .data :input").val(1);
       }
       else {
-        // Set screen_fail_indicator to false
-        $("#" + quotaEnforcementSettings['screen_fail_indicator'] + "-tr .data :input").val(0);
+        // Set quota_met_indicator to false
+        $("#" + quotaEnforcementSettings['quota_met_indicator'] + "-tr .data :input").val(0);
       }
 
       e.preventDefault();

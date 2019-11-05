@@ -17,8 +17,13 @@
 
   "project-settings": [
     {
-      "key": "screen_fail_indicator",
-      "name": "Screen Fail Indicator",
+      "key": "descriptive_text",
+      "name": "*** Indicator fields assume 0 == No and 1 == Yes (a good field type to use for these would be 'Yes - No')",
+      "type": "descriptive"
+    },
+    {
+      "key": "quota_met_indicator",
+      "name": "Quota Met Indicator",
       "required": true,
       "type": "field-list"
     },
