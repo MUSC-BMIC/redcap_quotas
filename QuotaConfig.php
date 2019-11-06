@@ -70,16 +70,15 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
   }
 
   protected function dataCount($included_in_quota_n) {
+    $params = array('return_format' => 'array', 'fields' => array('record_id'));
+
     // if we set a variable to indicate the record should be included in the total_n count, use it to filter the data returned
-    if ($included_in_quota_n == '') {
-      $params = array('return_format' => 'array', 'fields' => array('record_id'));
-      $data = REDCap::getData($params);
-      return count($data);
-    } else {
+    if ($included_in_quota_n != '') {
       $params = array('return_format' => 'array', 'filterLogic' => "[$included_in_quota_n] = '1'", 'fields' => array('record_id'));
-      $data = REDCap::getData($params);
-      return count($data);
     };
+
+    $data = REDCap::getData($params);
+    return count($data);
   }
 
   protected function setJsSettings($var, $settings) {
