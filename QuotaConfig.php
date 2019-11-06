@@ -75,7 +75,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
     // if we set a variable to indicate the record should be included in the total_n count, use it to filter the data returned
     if ($included_in_quota_n != '') {
       $params = array('return_format' => 'array', 'filterLogic' => "[$included_in_quota_n] = '1'", 'fields' => array('record_id'));
-    };
+    }
 
     $data = REDCap::getData($params);
     return count($data);
