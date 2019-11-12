@@ -5,7 +5,10 @@ $(document).ready(function() {
     $.ajaxSetup({
       async: false
     });
-    $.get(quotaEnforcementSettings.url, $('form').serialize(), function(data) {
+
+    $form_data = $('form').serialize() + '&event_id=' + event_id;
+
+    $.get(quotaEnforcementSettings.url, $form_data, function(data) {
       quota_met = data;
       console.log(quota_met);
 

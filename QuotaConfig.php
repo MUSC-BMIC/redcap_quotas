@@ -59,7 +59,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
     $generic_quotas_met = $this->generic_quotas_met($config, $params);
 
     // $quota_met = $total_n_met || $dob_quota;
-    $quota_met = $total_n_met && $generic_quotas_met;
+    $quota_met = $total_n_met || $generic_quotas_met;
     return $quota_met;
   }
 
@@ -84,6 +84,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
     $field_quantities = $config['field_quantity']['value'];
     $fields_selected = $config['field_selected']['value'];
 
+    $event_id = intval($request_params['event_id']);
+
     $quotas_met = false;
 
     for ($i = 0; $i < count($field_names); $i++)
@@ -97,7 +99,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
 
       foreach ($data as $record)
       {
-        $record = $record[43];
+        $record = $record[$event_id];
         if ($record[$field_name] == $field_selected)
         {
             $matching_records++;
@@ -118,27 +120,27 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
       $quota_met = false;
       if ($field_operator == '=')
       {
-        $quota_met = ($operand == $field_quantity);
+        $quota_met = ($operand >= $field_quantity);
       }
 
       if ($field_operator == '>')
       {
-        $quota_met = ($operand > $field_quantity);
+        $quota_met = ($operand < $field_quantity);
       }
 
       if ($field_operator == '>=')
       {
-        $quota_met = ($operand >= $field_quantity);
+        $quota_met = ($operand <= $field_quantity);
       }
 
       if ($field_operator == '<')
       {
-        $quota_met = ($operand < $field_quantity);
+        $quota_met = ($operand > $field_quantity);
       }
 
       if ($field_operator == '<=')
       {
-        $quota_met = ($operand <= $field_quantity);
+        $quota_met = ($operand >= $field_quantity);
       }
 
       if ($field_operator == '<>')
@@ -146,7 +148,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
         $quota_met = ($operand != $field_quantity);
       }
 
-      $quotas_met = ($quotas_met and $quota_met);
+      $quotas_met = ($quotas_met or $quota_met);
     }
 
     return $quotas_met;
