@@ -55,18 +55,101 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
   {
     $config = $this->getProjectSettings();
 
+    $total_n_met = $this->total_n_quota_met($config);
+    $generic_quotas_met = $this->generic_quotas_met($config, $params);
+
+    // $quota_met = $total_n_met || $dob_quota;
+    $quota_met = $total_n_met && $generic_quotas_met;
+    return $quota_met;
+  }
+
+  function total_n_quota_met($config)
+  {
     $total_n = $config['quota_n']['value'];
     $total_n_enforced = $config['quota_n_enforced']['value'];
 
     $total_data_count = $this->dataCount($config['included_in_quota_n']['value']);
-    $total_n_met = ($total_n_enforced == true) && ($total_data_count >= $total_n);
+    return ($total_n_enforced == true) && ($total_data_count >= $total_n);
+  }
 
-    // another quota check
-    // $dob_quoata = true;
+  function generic_quotas_met($config, $request_params)
+  {
+    $params = array('return_format' => 'array');
+    $data = REDCap::getData($params);
+    $total_count = count($data);
 
-    // $quota_met = $total_n_met || $dob_quota;
-    $quota_met = $total_n_met;
-    return $quota_met;
+    $field_names = $config['field_name']['value'];
+    $field_operators = $config['field_operator']['value'];
+    $field_quantifiers = $config['field_quantifier']['value'];
+    $field_quantities = $config['field_quantity']['value'];
+    $fields_selected = $config['field_selected']['value'];
+
+    $quotas_met = false;
+
+    for ($i = 0; $i < count($field_names); $i++)
+    {
+      $field_name = $field_names[$i][0];
+      $field_operator = $field_operators[$i];
+      $field_quantifier = $field_quantifiers[$i];
+      $field_quantity = intval($field_quantities[$i]);
+      $field_selected = $fields_selected[$i][0];
+      $matching_records = 0;
+
+      foreach ($data as $record)
+      {
+        $record = $record[43];
+        if ($record[$field_name] == $field_selected)
+        {
+            $matching_records++;
+        }
+      }
+
+      if ($request_params[$field_name] == $field_selected)
+      {
+        $matching_records++;
+      }
+
+      $operand = $matching_records;
+      if ($field_quantifier == '%')
+      {
+        $operand = $matching_records / $total_count;
+      }
+
+      $quota_met = false;
+      if ($field_operator == '=')
+      {
+        $quota_met = ($operand == $field_quantity);
+      }
+
+      if ($field_operator == '>')
+      {
+        $quota_met = ($operand > $field_quantity);
+      }
+
+      if ($field_operator == '>=')
+      {
+        $quota_met = ($operand >= $field_quantity);
+      }
+
+      if ($field_operator == '<')
+      {
+        $quota_met = ($operand < $field_quantity);
+      }
+
+      if ($field_operator == '<=')
+      {
+        $quota_met = ($operand <= $field_quantity);
+      }
+
+      if ($field_operator == '<>')
+      {
+        $quota_met = ($operand != $field_quantity);
+      }
+
+      $quotas_met = ($quotas_met and $quota_met);
+    }
+
+    return $quotas_met;
   }
 
   protected function dataCount($included_in_quota_n) {
