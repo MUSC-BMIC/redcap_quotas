@@ -193,7 +193,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule
 
       // This value tracks if the quota was NOT violated by the data existing in the database
       // but IS violated by the addition of the request data to that of the data in the database
-      $quota_newly_violated = !$quota_previously_violated and $quota_now_violated;
+      $quota_newly_violated = (!$quota_previously_violated and $quota_now_violated);
 
       if ($quota_newly_violated)
       {
