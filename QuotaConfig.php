@@ -174,13 +174,13 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         // the quota. However, this might get us into trouble in scenarios where the quota is "at
         // most 10 women" and we current have 12 women. We will not be considering that a new violation
         // as things stand and that might be a problem
-        $quota_previously_violated = $this->quota_arithmetic_violated(
-                $previous_operand,
-                $field_operator,
-                $field_quantity,
-                $total_n,
-                $total_n_enforced,
-                $existing_n);
+        // $quota_previously_violated = $this->quota_arithmetic_violated(
+        //         $previous_operand,
+        //         $field_operator,
+        //         $field_quantity,
+        //         $total_n,
+        //         $total_n_enforced,
+        //         $existing_n);
         
         $quota_now_violated = $this->quota_arithmetic_violated(
                 $new_operand,
@@ -192,7 +192,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
         // This value tracks if the quota was NOT violated by the data existing in the database
         // but IS violated by the addition of the request data to that of the data in the database
-        return (!$quota_previously_violated and $quota_now_violated);
+        return $quota_now_violated;
     }
 
     private function quota_arithmetic_violated(
@@ -205,18 +205,21 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         
         if ($operator == '=') {
             // Operation isn't well defined
-            return ($operand != $quantity);
+            // return ($operand != $quantity);
+            return false;
         }
 
         if ($operator == '>') {
-            if ($operand > $quantity or !$total_n_enforced) {
+            // if ($operand > $quantity or !$total_n_enforced) {
+            if ($operand > $quantity) {
                 return false;
             } else {
                 return ($quantity - $operand) >= $total_n - $existing_n;
             }
         }
 
-        if ($operator == '>=' or !$total_n_enforced) {
+        // if ($operator == '>=' or !$total_n_enforced) {
+        if ($operator == '>=') {
             if ($operand >= $quantity) {
                 return false;
             } else {
@@ -234,7 +237,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
         if ($operator == '<>') {
             // Operation isn't well defined
-            return ($operand == $quantity);
+            // return ($operand == $quantity);
+            return false;
         }
 
         return false;
