@@ -7,6 +7,16 @@
           "name": "Andrew Cates",
           "email": "catesa@musc.edu",
           "institution": "MUSC"
+      },
+      {
+          "name": "Sherly Roy Yesudhas",
+          "email": "royyesud@musc.edu",
+          "institution": "MUSC"
+      },
+      {
+          "name": "Johanna McGann",
+          "email": "wiel@musc.edu",
+          "institution": "MUSC"
       }
   ],
   "no-auth-pages": ["quota_enforcer"],
@@ -53,9 +63,9 @@
       "required": true
     },
     {
-      "key": "quota_n_enforced",
-      "name": "Enforce Total",
-      "type": "checkbox",
+      "key": "block_size",
+      "name": "Block Size",
+      "type": "text",
       "required": false
     },
     {
@@ -79,50 +89,12 @@
           "type": "field-list"
          },
          {
-          "key": "field_selected",
-          "name": "Value",
+          "key": "field_quantity",
+          "name": "Quantity",
           "type": "text",
           "required": true
          }
        ]
-      },
-      {
-       "key": "field_operator",
-       "name": "Operator",
-       "type": "dropdown",
-       "choices": [
-        {
-          "value": "=",
-          "name": "="
-        },
-        {
-          "value": ">",
-          "name": ">"
-        },
-        {
-          "value": ">=",
-          "name": ">="
-        },
-        {
-          "value": "<",
-          "name": "<"
-        },
-        {
-          "value": "<=",
-          "name": "<="
-        },
-        {
-          "value": "<>",
-          "name": "<>"
-        }
-       ],
-       "required": true
-      },
-      {
-        "key": "field_quantity",
-        "name": "Quantity",
-        "type": "text",
-        "required": "true"
       },
       {
        "key": "field_quantifier",

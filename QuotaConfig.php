@@ -69,9 +69,13 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     }
 
     function generic_quotas_newly_violated($config, $request_params) {
-        $params = array('return_format' => 'array');
-        $existing_data = REDCap::getData($params);
+        $quota_met_indicator = $config['quota_met_indicator']['value'];
 
+        #Only include data where quota_met_indicator is false, these are the people who made it into
+        $params = array('return_format' => 'array', 'filterLogic' => "[$quota_met_indicator] = '0'", 'fields' => array('record_id'));
+        
+        $existing_data = REDCap::getData($params);
+  
         $total_n = $config['quota_n']['value'];
         $total_n_enforced = $config['quota_n_enforced']['value'];
         $existing_n = count($existing_data);
@@ -214,6 +218,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
             if ($operand > $quantity) {
                 return false;
             } else {
+                #if quoata - existing_data is >= remaining slots, you have to reject
                 return ($quantity - $operand) >= $total_n - $existing_n;
             }
         }
@@ -223,6 +228,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
             if ($operand >= $quantity) {
                 return false;
             } else {
+                #if quoata - existing_data is >= remaining slots, you have to reject
                 return ($quantity - $operand) > $total_n - $existing_n;
             }
         }
