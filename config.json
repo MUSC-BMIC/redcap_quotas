@@ -89,6 +89,12 @@
           "type": "field-list"
          },
          {
+          "key": "field_selected",
+          "name": "Value",
+          "type": "text",
+          "required": true
+         },
+         {
           "key": "field_quantity",
           "name": "Quantity",
           "type": "text",
