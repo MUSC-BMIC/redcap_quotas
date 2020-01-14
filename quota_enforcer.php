@@ -1,7 +1,7 @@
 <?php
 
-$current_quota = $module->current_quota_for($_GET);
-$content = json_encode($current_quota);
+$failed_quota_check = $module->failed_quota_check($_GET);
+$content = json_encode($failed_quota_check);
 
 RestUtility::sendResponse(200, $content);
 

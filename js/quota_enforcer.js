@@ -2,7 +2,7 @@ setTimeout(function() {
   $(function() {
 
     function enforceQuota(e) {
-      $quota_met = false;
+      $failed_quota_check = false;
       $form_data = $('form').serialize() + '&event_id=' + event_id;
 
       $.get({
@@ -10,20 +10,20 @@ setTimeout(function() {
         async: false,
         data: $form_data,
         success: function(data) {
-          quota_met = data;
-          console.log(quota_met);
+          failed_quota_check = data;
+          console.log(failed_quota_check);
 
-          $message = (quota_met == "true") ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
+          $message = (failed_quota_check == "true") ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
           $("#quota-modal .modal-body").html($message);
           $('#quota-modal').modal('show');
 
-          if (quota_met == 'true') {
-            // Set quota_met_indicator to true
-            $("#" + quotaEnforcementSettings['quota_met_indicator'] + "-tr .data :input").val(1);
+          if (failed_quota_check == 'true') {
+            // Set passed_quota_check to false
+            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(0);
           }
           else {
-            // Set quota_met_indicator to false
-            $("#" + quotaEnforcementSettings['quota_met_indicator'] + "-tr .data :input").val(0);
+            // Set passed_quota_check to true
+            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(1);
           }
 
           e.preventDefault();

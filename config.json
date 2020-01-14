@@ -32,14 +32,14 @@
       "type": "descriptive"
     },
     {
-      "key": "quota_met_indicator",
-      "name": "Quota Met Indicator",
+      "key": "passed_quota_check",
+      "name": "Passed Quota Check Indicator",
       "required": true,
       "type": "field-list"
     },
     {
-      "key": "included_in_quota_n",
-      "name": "Included in Total N Count Indicator",
+      "key": "confirmed_enrollment",
+      "name": "Confirmed Enrollment Indicator",
       "type": "field-list"
     },
     {
@@ -51,14 +51,14 @@
     },
     {
        "key": "rejected",
-       "name": "Quota Met Message",
+       "name": "Rejection Message",
        "type": "textarea",
        "required": true,
        "default": "Project is full at this time."
     },
     {
-      "key": "quota_n",
-      "name": "Total N",
+      "key": "maximum_sample_size",
+      "name": "Max Sample Size",
       "type": "text",
       "required": true
     },
@@ -93,17 +93,17 @@
           "name": "Value",
           "type": "text",
           "required": true
-         },
-         {
-          "key": "field_quantity",
-          "name": "Quantity",
-          "type": "text",
-          "required": true
          }
        ]
       },
       {
-       "key": "field_quantifier",
+       "key": "field_quantity",
+       "name": "Quantity",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "field_quantity_type",
        "name": "Quantity Type",
        "type": "dropdown",
        "choices": [
