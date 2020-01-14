@@ -66,22 +66,26 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
     $total_data_count = $this->dataCount($filter_logic);
 
-    $quota_sample_sizes_obtained = $this->quota_sample_sizes_obtained($config, $maximum_sample_size, $total_data_count, $filter_logic, $params);
+    $sample_sizes_obtained = $this->sample_sizes_obtained($config, $maximum_sample_size, $total_data_count, $filter_logic, $params);
 
     $maximum_sample_size_obtained = $this->maximum_sample_size_obtained($maximum_sample_size, $total_data_count);
 
-    $return_val = $maximum_sample_size_obtained || $quota_sample_sizes_obtained;
+    $return_val = $maximum_sample_size_obtained || $sample_sizes_obtained;
     return $return_val;
   }
 
   // need to rename this method and incorporate non-quota sample sizes (residual space) TODO TODO TODO
-  function quota_sample_sizes_obtained($config, $maximum_sample_size, $total_data_count, $filter_logic, $params) {
+  function sample_sizes_obtained($config, $maximum_sample_size, $total_data_count, $filter_logic, $params) {
     $field_names = $config['field_name']['value'];
     $fields_selected = $config['field_selected']['value'];
     $field_quantities = $config['field_quantity']['value'];
     $field_quantity_types = $config['field_quantity_type']['value'];
 
     $obtained = array();
+
+    // max number based on configuration and total number actually being utilized
+    $maximum_quota_related_sample_size = 0;
+    $total_quota_data_count = 0;
 
     $x = array();
 
@@ -108,16 +112,19 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       $diff = array_diff_assoc($quotas, $params);
 
+      foreach($quotas as $key => $value) {
+        $quota_filter_logic .= " AND [$key] = '$value'";
+      }
+
+      $quota_data_count = $this->dataCount($quota_filter_logic);
+
+      $maximum_quota_related_sample_size += $field_quantity;
+      $total_quota_data_count += $quota_data_count;
+
       //print_r($quotas);
       //print_r($diff);
 
       if(empty($diff)) {
-
-        foreach($quotas as $key => $value) {
-          $quota_filter_logic .= " AND [$key] = '$value'";
-        }
-
-        $quota_data_count = $this->dataCount($quota_filter_logic);
 
         if($quota_data_count >= $field_quantity) {
           array_push($obtained, 1);
@@ -126,6 +133,11 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
           array_push($obtained, 0);
         }
       }
+    }
+
+    // as long as we have 1 free spot available that isn't quota related we can allow this record to have it
+    if (($maximum_sample_size - $maximum_quota_related_sample_size >= 1) && ($total_data_count - $total_quota_data_count >= 1)) {
+      array_push($obtained, 0);
     }
 
     //print_r($obtained);
