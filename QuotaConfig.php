@@ -53,7 +53,38 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   }
 
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
-    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    $config = $this->getProjectSettings();
+    $passed_quota_check = $config['passed_quota_check']['value'];
+    $confirmed_enrollment = $config['confirmed_enrollment']['value'];
+
+    // this is a new record
+    if (is_null($record)) {
+      $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    }
+    else {
+      $fields = array($passed_quota_check);
+
+      if ($confirmed_enrollment != '') {
+        array_push($fields, $confirmed_enrollment);
+      }
+
+      $params = array('return_format' => 'array', 'records' => $record, 'fields' => $fields);
+
+      $data = REDCap::getData($params);
+      $record_data = $data[$record][$event_id];
+
+      if ($confirmed_enrollment != '') {
+        if ($record_data[$confirmed_enrollment] == 0) {
+          $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+        }
+      }
+      else {
+        if ($record_data[$passed_quota_check] == 0) {
+          $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+        }
+
+      }
+    }
   }
 
   function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
