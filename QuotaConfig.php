@@ -23,22 +23,23 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   function init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
   // this pertains to data entry forms and surveys
     $config = $this->getProjectSettings();
+    $modal_title = $config['modal_title']['value'];
 
-    echo '
-  <div id="quota-modal" class="modal fade" role="dialog" data-backdrop="static">
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-      <h4 class="modal-title">Eligibility <span class="module-name"></span></h4>
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-defaultrc" id="btnCloseCodesModalDelete" data-dismiss="modal">Close</button>
+    echo "
+  <div id='quota-modal' class='modal fade' role='dialog' data-backdrop='static'>
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h4 class='modal-title'>$modal_title<span class='module-name'></span></h4>
+          <button type='button' class='close' data-dismiss='modal'>&times;</button>
+        </div>
+        <div class='modal-body'></div>
+        <div class='modal-footer'>
+          <button type='button' class='btn btn-defaultrc' id='btnCloseCodesModalDelete' data-dismiss='modal'>Continue</button>
+        </div>
       </div>
     </div>
-    </div>
-  </div>';
+  </div>";
 
     $qes = array(
       'url' => $this->getUrl('quota_enforcer.php', true, true),
