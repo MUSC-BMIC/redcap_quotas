@@ -38,7 +38,7 @@ setTimeout(function() {
       });
     }
 
-    var submitBtns = $("[id^=submit-btn-save]");
+    var submitBtns = $("[name^=submit-btn-save]");
 
     submitBtns.prop("onclick", null).off("click");
     submitBtns.each((i, elt) => {

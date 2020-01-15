@@ -20,8 +20,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     }
   }
 
+  function init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
   // this pertains to data entry forms and surveys
-  function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
     $config = $this->getProjectSettings();
 
     echo '
@@ -49,6 +49,14 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
     $this->setJsSettings('quotaEnforcementSettings', $qes);
     $this->includeJs('js/quota_enforcer.js');
+  }
+
+  function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
+    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+  }
+
+  function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
+    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
   }
 
   function failed_data_count_check($params) {
