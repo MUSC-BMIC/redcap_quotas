@@ -15,7 +15,15 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       // Get the data dictionary for the current project in array format
       $dd_array = REDCap::getDataDictionary('array');
 
-      $this->setJsSettings('quotaConfigFields', $dd_array);
+      $filtered_dd_array = array();
+
+      foreach ($dd_array as $field_name => $field_attributes) {
+        if (($field_attributes['field_type'] == 'dropdown') || ($field_attributes['field_type'] == 'radio')) {
+          $filtered_dd_array[$field_name] = $field_attributes;
+        }
+      }
+
+      $this->setJsSettings('quotaConfigFields', $filtered_dd_array);
       $this->includeJs('js/quota_config.js');
     }
   }
