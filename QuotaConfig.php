@@ -127,11 +127,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       $quota_data_count = $this->dataCount($quota_filter_logic);
 
+      if ($quota_data_count > $field_quantity) {
+        $quota_data_count = $field_quantity;
+      }
+
       $maximum_quota_related_sample_size += $field_quantity;
       $total_quota_data_count += $quota_data_count;
-
-      //print_r($quotas);
-      //print_r($diff);
 
       if(empty($diff)) {
 
@@ -145,11 +146,14 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     }
 
     // as long as we have 1 free spot available that isn't quota related we can allow this record to have it
-    if (($maximum_sample_size - $maximum_quota_related_sample_size >= 1) && ($total_data_count - $total_quota_data_count >= 1)) {
+    // 150 mss, 100  = 50 slots free,  75 slots total, 50 quota slots total,  75 - 50 = 25 non-quota slots are used
+
+    $non_quota_data_count = $total_data_count - $total_quota_data_count;
+    $non_quota_sample_size = $maximum_sample_size - $maximum_quota_related_sample_size;
+
+    if ($non_quota_sample_size > $non_quota_data_count) {
       array_push($obtained, 0);
     }
-
-    //print_r($obtained);
 
     $obtained = array_unique($obtained);
 
