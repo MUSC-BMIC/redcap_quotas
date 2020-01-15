@@ -6,23 +6,24 @@
      {
           "name": "Andrew Cates",
           "email": "catesa@musc.edu",
-          "institution": "MUSC"
+          "institution": "Medical University of South Carolina"
       },
       {
           "name": "Sherly Roy Yesudhas",
           "email": "royyesud@musc.edu",
-          "institution": "MUSC"
+          "institution": "Medical University of South Carolina"
       },
       {
           "name": "Johanna McGann",
           "email": "wiel@musc.edu",
-          "institution": "MUSC"
+          "institution": "Medical University of South Carolina"
       }
   ],
   "no-auth-pages": ["quota_enforcer"],
   "permissions": [
     "redcap_every_page_top",
-    "redcap_data_entry_form_top"
+    "redcap_data_entry_form_top",
+    "redcap_survey_page_top"
   ],
 
   "project-settings": [
