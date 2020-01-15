@@ -154,6 +154,9 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     if ($non_quota_sample_size > $non_quota_data_count) {
       array_push($obtained, 0);
     }
+    else {
+      array_push($obtained, 1);
+    }
 
     $obtained = array_unique($obtained);
 
