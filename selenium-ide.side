@@ -1,0 +1,587 @@
+{
+  "id": "00a2fa30-21bc-4078-a399-befbe935b4a1",
+  "version": "2.0",
+  "name": "REDCap Quotas",
+  "url": "http://andrews-imac.135can.musc.edu/redcap",
+  "tests": [{
+    "id": "538eb3bd-ef8f-4609-84b3-506e4a94ca2f",
+    "name": "Test 1",
+    "commands": [{
+      "id": "f4671315-9203-4331-af08-a65625a0c6d4",
+      "comment": "",
+      "command": "open",
+      "target": "http://andrews-imac.135can.musc.edu/redcap/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0cbc0025-5c3d-4928-8d82-5d2186f80029",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "2560x1371",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0e8ec05a-0648-4321-b779-fabb8f91341a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=My Projects",
+      "targets": [
+        ["linkText=My Projects", "linkText"],
+        ["css=.nav:nth-child(1) > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'My Projects')]", "xpath:link"],
+        ["xpath=//div[@id='redcap-home-navbar-collapse']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/redcap/index.php?action=myprojects')]", "xpath:href"],
+        ["xpath=//nav/div/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' My Projects')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "aaa6a6c4-a4b0-48f7-87e8-91a951b659e1",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=New Project",
+      "targets": [
+        ["linkText=New Project", "linkText"],
+        ["css=.nav:nth-child(1) > .nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'New Project')]", "xpath:link"],
+        ["xpath=//div[@id='redcap-home-navbar-collapse']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/redcap/index.php?action=create')]", "xpath:href"],
+        ["xpath=//nav/div/ul/li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' New Project')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "117be352-3cff-4a84-b2f8-f6696d5c10fc",
+      "comment": "",
+      "command": "type",
+      "target": "id=app_title",
+      "targets": [
+        ["id=app_title", "id"],
+        ["name=app_title", "name"],
+        ["css=#app_title", "css:finder"],
+        ["xpath=//input[@id='app_title']", "xpath:attributes"],
+        ["xpath=//div[@id='pagecontent']/div/form/table/tbody/tr/td[2]/input", "xpath:idRelative"],
+        ["xpath=//td[2]/input", "xpath:position"]
+      ],
+      "value": "Test Project"
+    }, {
+      "id": "fa1d30d9-8eda-4ebd-bfb7-bf3f5215ecf7",
+      "comment": "",
+      "command": "click",
+      "target": "id=purpose",
+      "targets": [
+        ["id=purpose", "id"],
+        ["name=purpose", "name"],
+        ["css=#purpose", "css:finder"],
+        ["xpath=//select[@id='purpose']", "xpath:attributes"],
+        ["xpath=//td[@id='row_purpose2']/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9dace858-71ab-420b-8d40-8c7fd6d7a62c",
+      "comment": "",
+      "command": "select",
+      "target": "id=purpose",
+      "targets": [],
+      "value": "label=Practice / Just for fun"
+    }, {
+      "id": "936774a5-e556-4ef4-b53f-a583a4f4e435",
+      "comment": "",
+      "command": "click",
+      "target": "id=project_template_radio1",
+      "targets": [
+        ["id=project_template_radio1", "id"],
+        ["css=#project_template_radio1", "css:finder"],
+        ["xpath=//input[@id='project_template_radio1']", "xpath:attributes"],
+        ["xpath=//div[@id='pagecontent']/div/form/table/tbody/tr[6]/td[2]/div[3]/input", "xpath:idRelative"],
+        ["xpath=//td[2]/div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5ebb9198-7d50-4a92-a665-c2bd1ca17cb1",
+      "comment": "",
+      "command": "click",
+      "target": "name=copyof",
+      "targets": [
+        ["name=copyof", "name"],
+        ["css=tr:nth-child(1) .fc > input", "css:finder"],
+        ["xpath=//input[@name='copyof']", "xpath:attributes"],
+        ["xpath=//table[@id='table-template_projects_list']/tbody/tr/td/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/table/tbody/tr/td/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "08c92f79-658f-46ce-bdee-656d1cfa0f6e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primaryrc",
+      "targets": [
+        ["css=.btn-primaryrc", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='pagecontent']/div/form/table/tbody/tr[8]/td[2]/button", "xpath:idRelative"],
+        ["xpath=//td[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Create Project')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d5c454ef-be22-4a74-9205-ef51881a09c6",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=External Modules",
+      "targets": [
+        ["linkText=External Modules", "linkText"],
+        ["css=.hang:nth-child(14) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'External Modules')]", "xpath:link"],
+        ["xpath=//div[@id='app_panel']/div[2]/div/div/div/div[14]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://andrews-imac.135can.musc.edu/redcap/redcap_v9.3.3/ExternalModules/manager/project.php?pid=16']", "xpath:href"],
+        ["xpath=//div[14]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'External Modules')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "36606275-0d8f-4f58-9770-9fb09d0aecde",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "68ac98be-a19a-4df4-85bd-de6e27436594",
+      "comment": "",
+      "command": "click",
+      "target": "id=west",
+      "targets": [
+        ["id=west", "id"],
+        ["css=#west", "css:finder"],
+        ["xpath=//div[@id='west']", "xpath:attributes"],
+        ["xpath=//div[9]/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dff85e46-6d69-4b9a-88af-b42e4eaa6e09",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=External Modules",
+      "targets": [
+        ["linkText=External Modules", "linkText"],
+        ["css=.hang:nth-child(14) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'External Modules')]", "xpath:link"],
+        ["xpath=//div[@id='app_panel']/div[2]/div/div/div/div[14]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://andrews-imac.135can.musc.edu/redcap/redcap_v9.3.3/ExternalModules/manager/project.php?pid=16']", "xpath:href"],
+        ["xpath=//div[14]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'External Modules')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "80ee24d7-8988-4c16-9a4b-e579b5be446b",
+      "comment": "",
+      "command": "click",
+      "target": "id=external-modules-enable-modules-button",
+      "targets": [
+        ["id=external-modules-enable-modules-button", "id"],
+        ["css=#external-modules-enable-modules-button", "css:finder"],
+        ["xpath=//button[@id='external-modules-enable-modules-button']", "xpath:attributes"],
+        ["xpath=//div[@id='center']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6909f169-3530-4538-875c-e1f9b2ab454f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=external-modules-enable-modules-button",
+      "targets": [
+        ["id=external-modules-enable-modules-button", "id"],
+        ["css=#external-modules-enable-modules-button", "css:finder"],
+        ["xpath=//button[@id='external-modules-enable-modules-button']", "xpath:attributes"],
+        ["xpath=//div[@id='center']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "75b38a46-c69e-4063-89f0-9e61f7fa366a",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=external-modules-enable-modules-button",
+      "targets": [
+        ["id=external-modules-enable-modules-button", "id"],
+        ["css=#external-modules-enable-modules-button", "css:finder"],
+        ["xpath=//button[@id='external-modules-enable-modules-button']", "xpath:attributes"],
+        ["xpath=//div[@id='center']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f0fd8ce6-0483-425d-9f63-a7a56c997569",
+      "comment": "",
+      "command": "click",
+      "target": "css=.enable-button",
+      "targets": [
+        ["css=.enable-button", "css:finder"],
+        ["xpath=//table[@id='external-modules-disabled-table']/tbody/tr/td[2]/button", "xpath:idRelative"],
+        ["xpath=//td[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Enable')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0604999f-3da9-43d9-8424-e2283e8979ee",
+      "comment": "",
+      "command": "click",
+      "target": "css=.external-modules-configure-button",
+      "targets": [
+        ["css=.external-modules-configure-button", "css:finder"],
+        ["xpath=//table[@id='external-modules-enabled']/tbody/tr/td[2]/button", "xpath:idRelative"],
+        ["xpath=//td[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Configure')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "37992884-71eb-494d-b77a-9d3e154bdfa7",
+      "comment": "",
+      "command": "click",
+      "target": "name=passed_quota_check",
+      "targets": [
+        ["name=passed_quota_check", "name"],
+        ["css=.requiredm:nth-child(2) .external-modules-input-element", "css:finder"],
+        ["xpath=//select[@name='passed_quota_check']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[2]/td[2]/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e1d41b9d-147b-4d47-a9fd-40b086b08548",
+      "comment": "",
+      "command": "select",
+      "target": "name=passed_quota_check",
+      "targets": [],
+      "value": "label=comments - Comments"
+    }, {
+      "id": "f1e521a3-5974-442f-ac5e-7e4fdd564437",
+      "comment": "",
+      "command": "click",
+      "target": "name=maximum_sample_size",
+      "targets": [
+        ["name=maximum_sample_size", "name"],
+        ["css=.requiredm:nth-child(7) .external-modules-input-element", "css:finder"],
+        ["xpath=//input[@name='maximum_sample_size']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[7]/td[2]/input", "xpath:idRelative"],
+        ["xpath=//tr[7]/td[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "767825d5-9e9d-4d6d-a046-7accb60db555",
+      "comment": "",
+      "command": "type",
+      "target": "name=maximum_sample_size",
+      "targets": [
+        ["name=maximum_sample_size", "name"],
+        ["css=.requiredm:nth-child(7) .external-modules-input-element", "css:finder"],
+        ["xpath=//input[@name='maximum_sample_size']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[7]/td[2]/input", "xpath:idRelative"],
+        ["xpath=//tr[7]/td[2]/input", "xpath:position"]
+      ],
+      "value": "4"
+    }, {
+      "id": "14fefe16-5489-4cb9-951e-f43b629f2c18",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "name=field_name____0____0",
+      "targets": [
+        ["name=field_name____0____0", "name"],
+        ["css=.requiredm:nth-child(11) .external-modules-input-element", "css:finder"],
+        ["xpath=//select[@name='field_name____0____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[11]/td[2]/select", "xpath:idRelative"],
+        ["xpath=//tr[11]/td[2]/select", "xpath:position"]
+      ],
+      "value": "14,12"
+    }, {
+      "id": "d6077097-68a4-4e60-bf92-ee5cbe10e108",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "name=field_name____0____0",
+      "targets": [
+        ["name=field_name____0____0", "name"],
+        ["css=.requiredm:nth-child(11) .external-modules-input-element", "css:finder"],
+        ["xpath=//select[@name='field_name____0____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[11]/td[2]/select", "xpath:idRelative"],
+        ["xpath=//tr[11]/td[2]/select", "xpath:position"]
+      ],
+      "value": "14,12"
+    }, {
+      "id": "28c6ff8f-0ae6-47fa-900a-ac19a0029388",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "name=field_name____0____0",
+      "targets": [
+        ["name=field_name____0____0", "name"],
+        ["css=.requiredm:nth-child(11) .external-modules-input-element", "css:finder"],
+        ["xpath=//select[@name='field_name____0____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[11]/td[2]/select", "xpath:idRelative"],
+        ["xpath=//tr[11]/td[2]/select", "xpath:position"]
+      ],
+      "value": "14,12"
+    }, {
+      "id": "d918d4ba-2ef0-4efd-9514-b89289b3bef8",
+      "comment": "",
+      "command": "click",
+      "target": "name=field_name____0____0",
+      "targets": [
+        ["name=field_name____0____0", "name"],
+        ["css=.requiredm:nth-child(11) .external-modules-input-element", "css:finder"],
+        ["xpath=//select[@name='field_name____0____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[11]/td[2]/select", "xpath:idRelative"],
+        ["xpath=//tr[11]/td[2]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f94d0d81-d5d8-4851-8e40-4b1cba07eef1",
+      "comment": "",
+      "command": "select",
+      "target": "name=field_name____0____0",
+      "targets": [],
+      "value": "label=sex - Sex"
+    }, {
+      "id": "fa9a481b-6109-4c60-9e8d-d2abf11d85ca",
+      "comment": "",
+      "command": "click",
+      "target": "name=field_quantity____0",
+      "targets": [
+        ["name=field_quantity____0", "name"],
+        ["css=.requiredm:nth-child(14) .external-modules-input-element", "css:finder"],
+        ["xpath=//input[@name='field_quantity____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[14]/td[2]/input", "xpath:idRelative"],
+        ["xpath=//tr[14]/td[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "21f8a0ad-7d28-4d52-9c69-fd9e397dbc5d",
+      "comment": "",
+      "command": "type",
+      "target": "name=field_quantity____0",
+      "targets": [
+        ["name=field_quantity____0", "name"],
+        ["css=.requiredm:nth-child(14) .external-modules-input-element", "css:finder"],
+        ["xpath=//input[@name='field_quantity____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[14]/td[2]/input", "xpath:idRelative"],
+        ["xpath=//tr[14]/td[2]/input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "e80bc503-3fa9-4f46-a712-9d246c477369",
+      "comment": "",
+      "command": "click",
+      "target": "css=.requiredm:nth-child(14) .requiredlabel",
+      "targets": [
+        ["css=.requiredm:nth-child(14) .requiredlabel", "css:finder"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[14]/td/div", "xpath:idRelative"],
+        ["xpath=//tr[14]/td/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "009defe8-ee96-49b3-a04b-29ae09ec433e",
+      "comment": "",
+      "command": "click",
+      "target": "name=field_quantity_type____0",
+      "targets": [
+        ["name=field_quantity_type____0", "name"],
+        ["css=.requiredm:nth-child(15) .external-modules-input-element", "css:finder"],
+        ["xpath=//select[@name='field_quantity_type____0']", "xpath:attributes"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[15]/td[2]/select", "xpath:idRelative"],
+        ["xpath=//tr[15]/td[2]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b36d8088-5b04-4ba9-85e4-b5de5a15cefe",
+      "comment": "",
+      "command": "select",
+      "target": "name=field_quantity_type____0",
+      "targets": [],
+      "value": "label=total"
+    }, {
+      "id": "6315ec23-76b7-4285-a835-d20172b5463b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.requiredm:nth-child(15) > .external-modules-input-td",
+      "targets": [
+        ["css=.requiredm:nth-child(15) > .external-modules-input-td", "css:finder"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[2]/table/tbody/tr[15]/td[2]", "xpath:idRelative"],
+        ["xpath=//tr[15]/td[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c6a819f-93db-4cb2-a7a4-5ff8ecf29f69",
+      "comment": "",
+      "command": "click",
+      "target": "css=.modal-lg .save",
+      "targets": [
+        ["css=.modal-lg .save", "css:finder"],
+        ["xpath=//div[@id='external-modules-configure-modal']/div/div/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//div[6]/div/div/div[3]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e6b43acf-c682-488b-aa1c-a403bf21eafe",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Add / Edit Records",
+      "targets": [
+        ["linkText=Add / Edit Records", "linkText"],
+        ["css=.x-panel:nth-child(2) .hang:nth-child(3) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Add / Edit Records')]", "xpath:link"],
+        ["xpath=//div[@id='west']/div[2]/div[2]/div/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/redcap/redcap_v9.3.3/DataEntry/record_home.php?pid=16')]", "xpath:href"],
+        ["xpath=//div[2]/div/div/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Add / Edit Records')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "19df5551-566d-49ce-96f9-c6362a9ca911",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-rcgreen",
+      "targets": [
+        ["css=.btn-rcgreen", "css:finder"],
+        ["xpath=//button[@onclick=\"window.location.href=app_path_webroot+page+'?pid='+pid+'&id=1&auto=1&arm='+($('#arm_name_newid').length ? $('#arm_name_newid').val() : '1');return false;\"]", "xpath:attributes"],
+        ["xpath=//div[@id='center']/table/tbody/tr[3]/td[2]/button", "xpath:idRelative"],
+        ["xpath=//td[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Add new record')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c5c9e291-fa39-4692-bdec-e036c92f5aca",
+      "comment": "",
+      "command": "click",
+      "target": "name=sex___radio",
+      "targets": [
+        ["name=sex___radio", "name"],
+        ["css=.choicevert:nth-child(2) > input", "css:finder"],
+        ["xpath=//input[@name='sex___radio']", "xpath:attributes"],
+        ["xpath=//tr[@id='sex-tr']/td[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dc93b5b1-be2b-44f0-bb1c-f9c4faab68a9",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit-btn-saverecord",
+      "targets": [
+        ["id=submit-btn-saverecord", "id"],
+        ["name=submit-btn-saverecord", "name"],
+        ["css=#\\__SUBMITBUTTONS__-div > #submit-btn-saverecord", "css:finder"],
+        ["xpath=//button[@id='submit-btn-saverecord']", "xpath:attributes"],
+        ["xpath=//div[@id='__SUBMITBUTTONS__-div']/button", "xpath:idRelative"],
+        ["xpath=//td[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Save & Exit Form')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d19472ff-dca7-4569-9d2a-e1276287912a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.modal-body",
+      "targets": [
+        ["css=.modal-body", "css:finder"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6c5e80cd-a627-4063-869e-0fde02bf132e",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.modal-body",
+      "targets": [
+        ["css=.modal-body", "css:finder"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/div[2]", "xpath:position"]
+      ],
+      "value": "Accepted into Project"
+    }, {
+      "id": "5e1914f3-54e8-4e1c-b513-41680ca1b569",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=.modal-footer",
+      "targets": [
+        ["css=.modal-footer", "css:finder"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[3]", "xpath:position"]
+      ],
+      "value": "229,32"
+    }, {
+      "id": "999ffc47-bd35-4cca-8a23-ad7ea3eb5f61",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=.modal-footer",
+      "targets": [
+        ["css=.modal-footer", "css:finder"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[3]", "xpath:position"]
+      ],
+      "value": "229,32"
+    }, {
+      "id": "09d8b525-72f3-4b6b-a701-c2a54c1907a8",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=.modal-footer",
+      "targets": [
+        ["css=.modal-footer", "css:finder"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[3]", "xpath:position"]
+      ],
+      "value": "229,32"
+    }, {
+      "id": "e2ed1407-670e-4ac9-a734-7c79f177f04b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.modal-footer",
+      "targets": [
+        ["css=.modal-footer", "css:finder"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e923d5e5-b77a-4d65-8d01-21a0703e181f",
+      "comment": "",
+      "command": "click",
+      "target": "id=btnCloseCodesModalDelete",
+      "targets": [
+        ["id=btnCloseCodesModalDelete", "id"],
+        ["css=#btnCloseCodesModalDelete", "css:finder"],
+        ["xpath=//button[@id='btnCloseCodesModalDelete']", "xpath:attributes"],
+        ["xpath=//div[@id='quota-modal']/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Continue')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d12b7c4-f7ed-42f6-b807-676c5cd9c79a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "linkText=External Modules",
+      "targets": [
+        ["linkText=External Modules", "linkText"],
+        ["css=.hang:nth-child(14) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'External Modules')]", "xpath:link"],
+        ["xpath=//div[@id='app_panel']/div[2]/div/div/div/div[14]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://andrews-imac.135can.musc.edu/redcap/redcap_v9.3.3/ExternalModules/manager/project.php?pid=16']", "xpath:href"],
+        ["xpath=//div[14]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'External Modules')]", "xpath:innerText"]
+      ],
+      "value": "30000"
+    }]
+  }],
+  "suites": [{
+    "id": "e53fbfa8-56f0-4232-b4a0-d0201d119757",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://andrews-imac.135can.musc.edu/", "http://andrews-imac.135can.musc.edu/redcap"],
+  "plugins": []
+}
