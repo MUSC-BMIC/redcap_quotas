@@ -62,7 +62,38 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   }
 
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
-    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    $config = $this->getProjectSettings();
+    $passed_quota_check = $config['passed_quota_check']['value'];
+    $confirmed_enrollment = $config['confirmed_enrollment']['value'];
+
+    // this is a new record
+    if (is_null($record)) {
+      $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    }
+    else {
+      $fields = array($passed_quota_check);
+
+      if ($confirmed_enrollment != '') {
+        array_push($fields, $confirmed_enrollment);
+      }
+
+      $params = array('return_format' => 'array', 'records' => $record, 'fields' => $fields);
+
+      $data = REDCap::getData($params);
+      $record_data = $data[$record][$event_id];
+
+      if ($confirmed_enrollment != '') {
+        if ($record_data[$confirmed_enrollment] == 0) {
+          $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+        }
+      }
+      else {
+        if ($record_data[$passed_quota_check] == 0) {
+          $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+        }
+
+      }
+    }
   }
 
   function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
@@ -136,11 +167,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       $quota_data_count = $this->dataCount($quota_filter_logic);
 
+      if ($quota_data_count > $field_quantity) {
+        $quota_data_count = $field_quantity;
+      }
+
       $maximum_quota_related_sample_size += $field_quantity;
       $total_quota_data_count += $quota_data_count;
-
-      //print_r($quotas);
-      //print_r($diff);
 
       if(empty($diff)) {
 
@@ -154,11 +186,17 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     }
 
     // as long as we have 1 free spot available that isn't quota related we can allow this record to have it
-    if (($maximum_sample_size - $maximum_quota_related_sample_size >= 1) && ($total_data_count - $total_quota_data_count >= 1)) {
+    // 150 mss, 100  = 50 slots free,  75 slots total, 50 quota slots total,  75 - 50 = 25 non-quota slots are used
+
+    $non_quota_data_count = $total_data_count - $total_quota_data_count;
+    $non_quota_sample_size = $maximum_sample_size - $maximum_quota_related_sample_size;
+
+    if ($non_quota_sample_size > $non_quota_data_count) {
       array_push($obtained, 0);
     }
-
-    //print_r($obtained);
+    else {
+      array_push($obtained, 1);
+    }
 
     $obtained = array_unique($obtained);
 
