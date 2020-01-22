@@ -10,7 +10,7 @@
 - Click to Modify the Instrument
 - Click ‘Add Field’
 - **Within the ‘Add New Field’ modal:** 
-	- ‘Field Type’ should be set to ‘True - False’
+	- ‘Field Type’ should be set to ‘Yes - No'
 	- Under ‘Action Tags / Field Annotation’ add the tag @hidden 
 	- Under ‘Variable Name’, name your variable and Save. 
 
