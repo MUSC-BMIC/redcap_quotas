@@ -13,6 +13,7 @@ $(document).ready(function() {
         quotaConfigSettings.useOldVal = "true"
         $(this).trigger('change');
         quotaConfigSettings.useOldVal = "false"
+        cleanupFieldNameSelect();
       });
     });
 
@@ -60,3 +61,15 @@ $(document).ready(function() {
     });
   });
 });
+
+function cleanupFieldNameSelect() {
+  // clean up the dropdown so that only fields that should be used for quotas are shown
+  selector = "select[name*='field_name'] option"
+  $.each($(selector), function() {
+    if (quotaConfigValidFieldNameOptions.indexOf($(this).val()) == -1) {
+      $(this).remove();
+    }
+  });
+
+  setTimeout( cleanupFieldNameSelect, 100 );
+}
