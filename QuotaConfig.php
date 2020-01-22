@@ -18,13 +18,13 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $filtered_dd_array = array();
 
       foreach ($dd_array as $field_name => $field_attributes) {
-        if (($field_attributes['field_type'] != 'dropdown') && ($field_attributes['field_type'] != 'radio')) {
-          $filtered_dd_array[$field_name] = $field_attributes;
+        if (($field_attributes['field_type'] == 'dropdown') || ($field_attributes['field_type'] == 'radio')) {
+          array_push($filtered_dd_array, $field_name);
         }
       }
 
       $this->setJsSettings('quotaConfigFields', $dd_array);
-      $this->setJsSettings('quotaConfigInvalidFieldNameOptions', $filtered_dd_array);
+      $this->setJsSettings('quotaConfigValidFieldNameOptions', $filtered_dd_array);
       $this->includeJs('js/quota_config.js');
     }
   }

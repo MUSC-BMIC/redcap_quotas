@@ -64,9 +64,11 @@ $(document).ready(function() {
 
 function cleanupFieldNameSelect() {
   // clean up the dropdown so that only fields that should be used for quotas are shown
-  $.each(quotaConfigInvalidFieldNameOptions, function(index, hash) {
-    selector = "select[name*='field_name'] option[value='" + hash.field_name + "']";
-    $(selector).remove();
+  selector = "select[name*='field_name'] option"
+  $.each($(selector), function() {
+    if (quotaConfigValidFieldNameOptions.indexOf($(this).val()) == -1) {
+      $(this).remove();
+    }
   });
 
   setTimeout( cleanupFieldNameSelect, 100 );
