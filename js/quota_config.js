@@ -25,7 +25,7 @@ $(document).ready(function() {
 
         // dropdowns and radio buttons
         if (['dropdown', 'radio'].indexOf(quotaConfigFields[selectedVal].field_type) != -1) {
-          options = quotaConfigFields[selectedVal].select_choices_or_calculations.split(" | ");
+          options = quotaConfigFields[selectedVal].select_choices_or_calculations.split("|");
           newSelect = '<select class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
 
           $.each(options, function(index, value) {
