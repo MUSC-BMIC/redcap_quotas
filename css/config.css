@@ -1,0 +1,28 @@
+#external-modules-configure-modal tr[field="quota_name_setting"] {
+  background-color: #e6e6e6;
+}
+
+#external-modules-configure-modal .external-modules-instance-label {
+  display: none;
+}
+
+/* To show the number ONLY next to Quota header */
+#external-modules-configure-modal tr[field="quota_setting"] .external-modules-instance-label {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+#external-modules-configure-modal tr[field="quota_setting"] label {
+  font-size: 20px;
+  font-weight: bolder;
+}
+/* Move Quota header to left by hiding empty td */
+#external-modules-configure-modal tr[field="quota_setting"] > td:first-child {
+  display:none;
+}
+
+#external-modules-configure-modal tr[field="quota_setting"] > td:nth-child(3) {
+  text-align: right;
+}
+

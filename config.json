@@ -83,27 +83,6 @@
      "type": "sub_settings",
      "repeatable":true,
      "sub_settings":[
-     {
-       "key": "quota_name_setting",
-       "name": "Name/Value",
-       "required": true,
-       "type": "sub_settings",
-       "repeatable":true,
-       "sub_settings":[
-         {
-          "key": "field_name",
-          "name": "Name",
-          "required": true,
-          "type": "field-list"
-         },
-         {
-          "key": "field_selected",
-          "name": "Value",
-          "type": "text",
-          "required": true
-         }
-       ]
-      },
       {
        "key": "field_quantity",
        "name": "Quantity",
@@ -125,6 +104,27 @@
         }
        ],
         "required": "true"
+      },
+      {
+       "key": "quota_name_setting",
+       "name": "Name/Value",
+       "required": true,
+       "type": "sub_settings",
+       "repeatable":true,
+       "sub_settings":[
+         {
+          "key": "field_name",
+          "name": "Name",
+          "required": true,
+          "type": "field-list"
+         },
+         {
+          "key": "field_selected",
+          "name": "Value",
+          "type": "text",
+          "required": true
+         }
+       ]
       }
      ]
     }
