@@ -26,6 +26,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $this->setJsSettings('quotaConfigFields', $dd_array);
       $this->setJsSettings('quotaConfigValidFieldNameOptions', $filtered_dd_array);
       $this->includeJs('js/quota_config.js');
+      $this->includeCss('css/config.css');
     }
   }
 
@@ -220,6 +221,10 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
   protected function includeJs($path) {
     echo '<script src="' . $this->getUrl($path) . '"></script>';
+  }
+
+  protected function includeCss($path) {
+        echo '<link rel="stylesheet" href="' . $this->getUrl($path) . '">';
   }
 
 }
