@@ -130,6 +130,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $fields_selected = $config['field_selected']['value'];
     $field_quantities = $config['field_quantity']['value'];
     $field_quantity_types = $config['field_quantity_type']['value'];
+    $field_negated = $config['field_negated']['value'];
 
     $obtained = array();
 
@@ -143,7 +144,9 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $x[$j] = array('field_quantity' => $field_quantities[$j], 'field_quantity_type' => $field_quantity_types[$j], 'quotas' => array());
 
       for($k = 0; $k < count($field_names[$j]); $k++) {
-        $x[$j]['quotas'][$field_names[$j][$k]] = $fields_selected[$j][$k];
+        // Need to associate both the selected value and the negation with each
+        // selected field in the quota
+        $x[$j]['quotas'][$field_names[$j][$k]] = array('field_selected' => $fields_selected[$j][$k], 'field_negated' => ($field_negated[$j][$k] == 1));
       }
     }
 
@@ -160,10 +163,18 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       $quotas = $x[$l]['quotas'];
 
-      $diff = array_diff_assoc($quotas, $params);
+      // Since $quotas is now key => [value, negation] instead of key => value,
+      // we need to define a custom diff function that accounts for negation
+      $diff = $this->quota_diff_assoc($quotas, $params);
 
-      foreach($quotas as $key => $value) {
-        $quota_filter_logic .= " AND [$key] = '$value'";
+      foreach($quotas as $key => $values) {
+        $value = $values['field_selected'];
+        $negated = $values['field_negated'];
+        if ($negated) {
+            $quota_filter_logic .= " AND [$key] <> '$value'";
+        } else {
+            $quota_filter_logic .= " AND [$key] = '$value'";
+        }
       }
 
       $quota_data_count = $this->dataCount($quota_filter_logic);
@@ -207,6 +218,38 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
   function maximum_sample_size_obtained($maximum_sample_size, $total_data_count) {
     return ($total_data_count >= $maximum_sample_size);
+  }
+  
+  /*
+   * When making this diff, the $params object will be something along the lines of:
+   * $params = {
+   *    'sex': 0,
+   *    'race': 3,
+   *    ...
+   * }
+   * and $quotas will now be something like:
+   * $quotas = {
+   *    'sex': [1 (value), 0 (negated)],
+   *    ... 
+   * }
+   * 
+   * so we need a custom diff function that will compare the quota with the params
+   * values and account for the negation. Elements in the list will be added to the
+   * diff result in two cases:
+   * 1) The value in $params does NOT match the value for the same key in $quotas AND negation is false
+   * 2) The value in $params DOES match the value for the same key in $quotas AND negation is true
+   */
+  protected function quota_diff_assoc($quotas, $params) {
+      $diff = array();
+      foreach($quotas as $key => $values) {
+          $value = $values['field_selected'];
+          $negated = $values['field_negated'];
+          if (($negated && $params[$key] == $value) || (!$negated && $params[$key] != $value)) {
+                $diff[$key] = $value;
+          }
+      }
+      
+      return $diff;
   }
 
   protected function dataCount($filter_logic) {
