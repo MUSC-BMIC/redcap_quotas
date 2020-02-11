@@ -1,5 +1,16 @@
 $(document).ready(function() {
   var $modal = $('#external-modules-configure-modal');
+    
+    $modal.on('DOMSubtreeModified', function (e) {
+        var $target = $(e.target);
+        if ($target.is('tr.sub_start.sub_parent')) {
+            $target.find(".external-modules-add-instance").text('Add Quota');
+            $target.find(".external-modules-remove-instance").text('Remove Quota');
+        } else if ($target.is('tr.sub_start.sub_child')) {
+            $target.find(".external-modules-add-instance").text('Add Nested Quota');
+            $target.find(".external-modules-remove-instance").text('Remove Nested Quota');
+        }
+  });
 
   $modal.on('show.bs.modal', function() {
 
