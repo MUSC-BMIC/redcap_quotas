@@ -123,6 +123,11 @@
           "name": "Value",
           "type": "text",
           "required": true
+         },
+         {
+          "key": "field_negated",
+          "name": "Negate Selection",
+          "type": "checkbox"
          }
        ]
       }
