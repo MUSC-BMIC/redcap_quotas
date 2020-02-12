@@ -18,8 +18,9 @@
   font-weight: bolder;
 }
 /* Move Quota header to left by hiding empty td */
-#external-modules-configure-modal tr[field="quota_setting"] > td:first-child {
-  display:none;
+#external-modules-configure-modal tr[field="quota_setting"] > td:nth-child(2) {
+  display:block;
+  margin-left: -280px;
 }
 
 #external-modules-configure-modal tr[field="quota_setting"] > td:nth-child(3) {
