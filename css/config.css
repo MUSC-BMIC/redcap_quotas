@@ -27,3 +27,10 @@
   text-align: right;
 }
 
+#external-modules-configure-modal tr.sub_parent td.external-modules-add-remove-column button {
+    width: 140px;
+}
+
+#external-modules-configure-modal tr.sub_child td.external-modules-add-remove-column button {
+    width: 200px;
+}
