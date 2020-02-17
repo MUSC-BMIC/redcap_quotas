@@ -26,7 +26,9 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $this->setJsSettings('quotaConfigFields', $dd_array);
       $this->setJsSettings('quotaConfigValidFieldNameOptions', $filtered_dd_array);
       $this->includeJs('js/quota_config.js');
+      $this->includeJs('js/bootstrap-select.min.js');
       $this->includeCss('css/config.css');
+      $this->includeCss('css/bootstrap-select.min.css');
     }
   }
 
