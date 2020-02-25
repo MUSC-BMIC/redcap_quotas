@@ -1,6 +1,6 @@
 $(document).ready(function() {
   var $modal = $('#external-modules-configure-modal');
-    
+
     $modal.on('DOMSubtreeModified', function (e) {
         var $target = $(e.target);
         if ($target.is('tr.sub_start.sub_parent')) {
@@ -36,7 +36,7 @@ $(document).ready(function() {
 
         // dropdowns and radio buttons
         if (['dropdown', 'radio'].indexOf(quotaConfigFields[selectedVal].field_type) != -1) {
-          options = quotaConfigFields[selectedVal].select_choices_or_calculations.split("|");
+          options = quotaConfigFields[selectedVal].select_choices_or_calculations.split("| ");
           newSelect = '<select class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
 
           $.each(options, function(index, value) {
