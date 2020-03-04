@@ -16,9 +16,10 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $dd_array = REDCap::getDataDictionary('array');
 
       $filtered_dd_array = array();
+      $allowable_field_types = array('dropdown', 'radio', 'calc');
 
       foreach ($dd_array as $field_name => $field_attributes) {
-        if (($field_attributes['field_type'] == 'dropdown') || ($field_attributes['field_type'] == 'radio')) {
+        if (in_array($field_attributes['field_type'], $allowable_field_types)) {
           array_push($filtered_dd_array, $field_name);
         }
       }
