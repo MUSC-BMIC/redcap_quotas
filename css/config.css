@@ -34,3 +34,7 @@
 #external-modules-configure-modal tr.sub_child td.external-modules-add-remove-column button {
     width: 200px;
 }
+
+a.dropdown-item:hover {
+  font-size: 1rem;
+}
