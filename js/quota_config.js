@@ -33,6 +33,24 @@ $(document).ready(function () {
             });
         });
 
+        /* Need to clear out the placeholder value that's assigned in the
+         * 'rendered.bs.select hidden.bs.select' event handler so that the
+         * user can actually use the search box for typeahead search.
+         */ 
+        $(document).on('shown.bs.select', function (e) {
+            $(e.target).parent().find('input[type=search]').val('');
+        });
+
+        /* Need to assign this value to the search input whenever the bootstrap
+         * select is closed because the general validation on all tds with class
+         * 'requiredm' looks for a value for all interior inputs. By adding a
+         * placeholder value we can avoid unintentionally triggering validation
+         * just because the typeahead search input is empty.
+         */
+        $(document).on('rendered.bs.select hidden.bs.select', function (e) {
+            $(e.target).parent().find('input[type=search]').val('--VALIDATION PLACEHOLDER--');
+        });
+
         $(document).on('change', "select[name*='field_name']", function () {
             selectedVal = $(this).val();
             if (quotaConfigFields.hasOwnProperty(selectedVal)) {
