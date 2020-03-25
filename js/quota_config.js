@@ -43,12 +43,13 @@ $(document).ready(function () {
 
         /* Need to assign this value to the search input whenever the bootstrap
          * select is closed because the general validation on all tds with class
-         * 'requiredm' looks for a value for all interior inputs. By adding a
-         * placeholder value we can avoid unintentionally triggering validation
-         * just because the typeahead search input is empty.
+         * 'requiredm' looks for a value for all interior inputs. By duplicating
+         * the selected value in this input we can avoid unintentionally triggering
+         * validation just because the typeahead search input is empty.
          */
         $(document).on('rendered.bs.select hidden.bs.select', function (e) {
-            $(e.target).parent().find('input[type=search]').val('--VALIDATION PLACEHOLDER--');
+            var $target = $(e.target);
+            $target.parent().find('input[type=search]').val($target.val());
         });
 
         $(document).on('change', "select[name*='field_name']", function () {
@@ -63,7 +64,7 @@ $(document).ready(function () {
                     newSelect = '<select class="' + oldInput.attr('class') + '" name="' + oldInput.attr('name') + '">';
 
                     $.each(options, function (index, value) {
-                        option = value.split(", ");
+                        option = value.trim().split(", ");
 
                         if (quotaConfigSettings.useOldVal == 'true' && oldInput.val() == option[0]) {
                             newSelect += '<option value=' + option[0] + ' selected=selected>' + option[1] + '</option>';
@@ -81,6 +82,11 @@ $(document).ready(function () {
                     }
 
                     oldInput.replaceWith(newSelect);
+                    
+                    $modal.find("select").each(function () {
+                        $(this).attr('data-live-search', true);
+                        $(this).selectpicker();
+                    });
                 }
 
                 // text, notes, and calculated fields
