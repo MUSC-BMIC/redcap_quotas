@@ -10,14 +10,18 @@ setTimeout(function() {
         async: false,
         data: $form_data,
         success: function(data) {
-          failed_data_count_check = data;
+          data = JSON.parse(data);
+          failed_data_count_check = data.failed_data_check_count;
+          block_number = data.block_number;
+          
           console.log(failed_data_count_check);
+          console.log(block_number);
 
-          $message = (failed_data_count_check == "true") ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
+          $message = failed_data_count_check ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
           $("#quota-modal .modal-body").html($message);
           $('#quota-modal').modal('show');
 
-          if (failed_data_count_check == 'true') {
+          if (failed_data_count_check) {
             // Set passed_quota_check to false
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(0);
           }
@@ -25,6 +29,8 @@ setTimeout(function() {
             // Set passed_quota_check to true
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(1);
           }
+          
+          $("#block_number-tr .data :input").val(block_number);
 
           e.preventDefault();
           e.stopPropagation();
