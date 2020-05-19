@@ -116,10 +116,10 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     // Check to see if enrollment confirmation is enabled
     if ($confirmed_enrollment != '') {
       $filter_logic .= " AND [$confirmed_enrollment] = '1'";
-      
+
       // Check to see if the current record is confirmed
       if ($params['enrolled_confirmed']['value'] == '1') {
-        
+
         // If the current record has already been assigned a block number, return it
         // with failed_data_check_count false
         $current_block_number = $params['block_number']['value'];
@@ -133,17 +133,17 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         }
       }
     }
-    
+
     $total_data_count = $this->dataCount($filter_logic);
     $maximum_sample_size_reached = ($total_data_count >= $maximum_sample_size);
     $block_number = 0;
-    
+
     // If the maximum sample size has already been reached then no more
     // submissions should be accepted
     if ($maximum_sample_size_reached) {
       return array(failed_data_check_count => true, block_number => -1);
     }
-    
+
     // If enrollment confirmation is enabled, we can't assign blocks until the record
     // has been listed as elibigle for confirmation. So if 'eligibile_for_confirmation' != '1'
     // then we can't really do much with quota enforcement so just return an invalid block
@@ -151,39 +151,39 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     if ($confirmed_enrollment != '' && $params['eligible_for_enrollment']['value'] != '1') {
       return array(failed_data_check_count => false, block_number => -1);
     }
-    
+
     // Check to see if block size is defined
     if ($block_size != '') {
       // If the block number is already set, continue to use it, other wise calculate
       // it and use it
-      $block_number = $params['block_numer']['value'];
+      $block_number = $params['block_number']['value'];
       if ($block_number == '' || $block_number == '-1') {
         $block_number = $this->get_block_num_for_new_record($block_size, $filter_logic);
       }
-      
+
       $filter_logic .= " AND [block_number] = '$block_number'";
     } else {
       // If no block size is configured, just use the maximum sample size as
       // block size
       $block_size = $maximum_sample_size;
     }
-    
+
     $quotas = $this->generate_quotas_map($config);
     $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
-    
+
     if (empty($quotas_not_matched_by_submission)) {
       return array(failed_data_check_count => false, block_number => $block_number);
     }
-    
+
     $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
     $failed_data_check_count = !empty($unreachable_quotas);
-    
+
     return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number);
   }
-  
+
   /* Iterates through the flat lists of fields and generates a map that's more
    * easily reasoned about. The map will be of the form:
-   * Quotas = 
+   * Quotas =
    * [
    *   {
    *     'field_quantity': 10,
@@ -201,16 +201,16 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
    *   },
    *   ...
    * ]
-   */ 
+   */
   function generate_quotas_map($config) {
     $field_names = $config['field_name']['value'];
     $fields_selected = $config['field_selected']['value'];
     $field_quantities = $config['field_quantity']['value'];
     $field_quantity_types = $config['field_quantity_type']['value'];
     $field_negated = $config['field_negated']['value'];
-    
+
     $quotas = array();
-    
+
     for($i = 0; $i < count($field_names); $i++) {
       $quotas[$i] = array(
           'field_quantity'      => $field_quantities[$i],
@@ -225,10 +225,10 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
             'field_negated'  => ($field_negated[$i][$j] == 1));
       }
     }
-    
+
     return $quotas;
   }
-  
+
   /*
    * Inspects the data in the current submission to determine if it matches
    * any of the configured quotas. Returns an array containing the indexes of
@@ -242,22 +242,22 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         $negated = $details['field_negated'];
         $configured_value = $details['field_selected'];
         $submitted_value = $params[$name];
-        
+
         if ((!$negated && $configured_value != $submitted_value) ||
             ($negated && $configured_value == $submitted_value)) {
           $matches_quota = false;
           break;
         }
       }
-      
+
       if (!$matches_quota) {
         array_push($not_matched_quotas, $i);
       }
     }
-      
+
     return $not_matched_quotas;
   }
-  
+
   /*
    * Checks existing data and determines what block a new submission would
    * belong to.
@@ -266,11 +266,11 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $params = array('return_format' => 'array', 'filterLogic' => $filter_logic, 'fields' => array('block_number'));
     $data = REDCap::getData($params);
     $block_counts = array();
-    
+
     if (count($data) == 0) {
       return 0;
     }
-    
+
     foreach (array_keys($data) as $index_key) {
       $index_record = $data[$index_key];
       foreach (array_keys($index_record) as $id_key) {
@@ -289,17 +289,17 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         }
       }
     }
-    
+
     $max_block_number = max(array_keys($block_counts));
     $max_block_count = $block_counts[$max_block_number];
-    
+
     if ($max_block_count < $block_size) {
       return $max_block_number;
     }
-    
+
     return $max_block_number + 1;
   }
-  
+
   function unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission) {
     $unreachable_quotas = array();
     for ($i = 0; $i < count($quotas_not_matched_by_submission); $i++) {
@@ -321,7 +321,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       foreach($attributes as $name => $details) {
         $negated = $details['field_negated'];
         $configured_value = $details['field_selected'];
-        
+
         if ($negated) {
             $quota_filter_logic .= " AND [$name] <> '$configured_value'";
         } else {
@@ -332,12 +332,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $existing_quota_data_count = $this->dataCount($quota_filter_logic);
       $num_still_required = $field_quantity - $existing_quota_data_count;
       $spots_remaining = $block_size - $total_data_count;
-      
+
       if ($spots_remaining <= $num_still_required) {
         array_push($unreachable_quotas, $quota_index);
       }
     }
-    
+
     return $unreachable_quotas;
   }
 
