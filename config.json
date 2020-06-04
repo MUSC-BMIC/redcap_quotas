@@ -65,6 +65,13 @@
        "default": "Project is full at this time."
     },
     {
+      "key": "eligibility_message",
+      "name": "Eligibility message",
+      "type": "textarea",
+      "required": true,
+      "default": "You may be eligible for this study. You will be contacted by an administrator."
+    },
+    {
       "key": "maximum_sample_size",
       "name": "Max Sample Size",
       "type": "text",

@@ -58,7 +58,9 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       'url' => $this->getUrl('quota_enforcer.php', true, true),
       'accepted' => $config['accepted']['value'],
       'rejected' => $config['rejected']['value'],
-      'passed_quota_check' => $config['passed_quota_check']['value']
+      'eligibility_message' => $config['eligibility_message']['value'],
+      'passed_quota_check' => $config['passed_quota_check']['value'],
+      'confirmed_enrollment' => $config['confirmed_enrollment']['value']
     );
 
     $this->setJsSettings('quotaEnforcementSettings', $qes);
@@ -112,26 +114,10 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $passed_quota_check = $config['passed_quota_check']['value'];
     $confirmed_enrollment = $config['confirmed_enrollment']['value'];
     $filter_logic = "[$passed_quota_check] = '1'";
+    $set_confirmed_enrollment = false; //this variable sets the confirmed_enrollment variable only after the second stage of checking
 
-    // Check to see if enrollment confirmation is enabled
-    if ($confirmed_enrollment != '') {
+    if ($confirmed_enrollment != ''){
       $filter_logic .= " AND [$confirmed_enrollment] = '1'";
-
-      // Check to see if the current record is confirmed
-      if ($params['enrolled_confirmed']['value'] == '1') {
-
-        // If the current record has already been assigned a block number, return it
-        // with failed_data_check_count false
-        $current_block_number = $params['block_number']['value'];
-        if ($current_block_number != '' && $current_block_number != '-1') {
-          return array(failed_data_count_check => false, block_number => $current_block_number);
-        } else {
-          // If the current record hasn't already been assigned a block number, calculate
-          // what it should be and return it with failed_data_check_count false
-          $block_number = $this->get_block_num_for_new_record($block_size, $filter_logic);
-          return array(failed_data_count_check => false, block_number => $block_number);
-        }
-      }
     }
 
     $total_data_count = $this->dataCount($filter_logic);
@@ -144,19 +130,31 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       return array(failed_data_check_count => true, block_number => -1);
     }
 
-    // If enrollment confirmation is enabled, we can't assign blocks until the record
-    // has been listed as elibigle for confirmation. So if 'eligibile_for_confirmation' != '1'
-    // then we can't really do much with quota enforcement so just return an invalid block
-    // number and say that the data check count didn't fail
-    if ($confirmed_enrollment != '' && $params['eligible_for_enrollment']['value'] != '1') {
-      return array(failed_data_check_count => false, block_number => -1);
+    if($confirmed_enrollment != ''){
+      //If the record is marked as not eligible OR not confirmed, show rejected message
+      if($params['eligible_for_enrollment']['value'] == '0' || $params['enrolled_confirmed']['value'] == '0'){
+        return array(failed_data_check_count => true, block_number => -1);
+      }
+
+      //If the record is marked as eligible AND not confirmed yet, show eligibility message
+      if ($params['eligible_for_enrollment']['value'] != '0' && $params['enrolled_confirmed']['value'] != '1') {
+        return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
+      }
+
+      // If the record is marked as confirmed, then get a new block number
+      // and set the Confirmed Enrollment variable
+      if ($params['enrolled_confirmed']['value'] == '1') {
+        $block_number = $this->get_block_num_for_new_record($block_size, $filter_logic);
+        $set_confirmed_enrollment = true;
+      }
+
     }
 
     // Check to see if block size is defined
     if ($block_size != '') {
       // If the block number is already set, continue to use it, other wise calculate
       // it and use it
-      $block_number = $params['block_number']['value'];
+      $block_number = $params['block_number'];
       if ($block_number == '' || $block_number == '-1') {
         $block_number = $this->get_block_num_for_new_record($block_size, $filter_logic);
       }
@@ -172,13 +170,13 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
 
     if (empty($quotas_not_matched_by_submission)) {
-      return array(failed_data_check_count => false, block_number => $block_number);
+      return array(failed_data_check_count => false, block_number => $block_number, set_confirmed_enrollment => $set_confirmed_enrollment);
     }
 
     $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
     $failed_data_check_count = !empty($unreachable_quotas);
 
-    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number);
+    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, set_confirmed_enrollment => $set_confirmed_enrollment);
   }
 
   /* Iterates through the flat lists of fields and generates a map that's more
@@ -276,7 +274,6 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       foreach (array_keys($index_record) as $id_key) {
         $id_record = $index_record[$id_key];
         $curr_block_number = $id_record['block_number'];
-
         if ($curr_block_number == '' || $curr_block_number == '-1') {
           continue;
         }
