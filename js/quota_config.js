@@ -2,6 +2,12 @@ $(document).ready(function () {
     var $modal = $('#external-modules-configure-modal');
 
     $modal.on('DOMSubtreeModified', function (e) {
+
+        // Making sure we are overriding this modules's modal only.
+        if ($(this).data('module') !== quotaConfigSettings.modulePrefix) {
+            return;
+        }
+
         var $target = $(e.target);
         if ($target.is('tr.sub_start.sub_parent')) {
             $target.find(".external-modules-add-instance").text('Add Quota');
@@ -36,7 +42,7 @@ $(document).ready(function () {
         /* Need to clear out the placeholder value that's assigned in the
          * 'rendered.bs.select hidden.bs.select' event handler so that the
          * user can actually use the search box for typeahead search.
-         */ 
+         */
         $(document).on('shown.bs.select', function (e) {
             $(e.target).parent().find('input[type=search]').val('');
         });
@@ -82,7 +88,7 @@ $(document).ready(function () {
                     }
 
                     oldInput.replaceWith(newSelect);
-                    
+
                     $modal.find("select").each(function () {
                         $(this).attr('data-live-search', true);
                         $(this).selectpicker();
