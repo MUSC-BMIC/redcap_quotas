@@ -64,7 +64,24 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     );
 
     $this->setJsSettings('quotaEnforcementSettings', $qes);
-    $this->includeJs('js/quota_enforcer.js');
+    // $this->includeJs('js/quota_enforcer.js');
+
+     // check if cheat_blocker plugin is enabled
+    $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
+    if (isset($enabledModules['redcap_cheat_blocker'])){
+      $cheat_module = \ExternalModules\ExternalModules::getModuleInstance('redcap_cheat_blocker');
+
+      $cheat_config = $cheat_module->getProjectSettings();
+      $cheatSettings = array(
+        'potential_duplicate_message' => $cheat_config['potential_duplicate_message']['value']
+      );
+
+      $this->setJsSettings('cheatSettings', $cheatSettings);
+      $this->includeJs('quotaconfig_cheatblocker.js');
+    }
+    else{
+      $this->includeJs('js/quota_enforcer.js');
+    }
   }
 
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
@@ -72,8 +89,11 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $passed_quota_check = $config['passed_quota_check']['value'];
     $confirmed_enrollment = $config['confirmed_enrollment']['value'];
 
-    // this is a new record
-    if (is_null($record)) {
+    // Check if cheat_blocker plugin is enabled, go to init_page_top if enabled
+    // If it's a new record, go to init_page_top
+    $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
+
+    if (isset($enabledModules['redcap_cheat_blocker']) || is_null($record)){
       $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
     }
     else {
@@ -97,8 +117,9 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         if ($record_data[$passed_quota_check] == 0) {
           $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
         }
-
       }
+
+
     }
   }
 
