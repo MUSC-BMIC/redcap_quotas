@@ -1,6 +1,12 @@
 $(document).ready(function () {
     var $modal = $('#external-modules-configure-modal');
 
+    //Show/Hide combined data dictionary file
+    if(both_enabled)
+       $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'block';
+    else
+       $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[1].style.display = 'none';
+
     $modal.on('DOMSubtreeModified', function (e) {
 
         // Making sure we are overriding this modules's modal only.
@@ -19,7 +25,6 @@ $(document).ready(function () {
     });
 
     $modal.on('show.bs.modal', function () {
-
         // Making sure we are overriding this modules's modal only.
         if ($(this).data('module') !== quotaConfigSettings.modulePrefix) {
             return;
@@ -127,3 +132,4 @@ function cleanupFieldNameSelect() {
 
     setTimeout(cleanupFieldNameSelect, 100);
 }
+

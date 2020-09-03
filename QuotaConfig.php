@@ -24,8 +24,14 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         }
       }
 
+      //also check if both the modules are enabled to show/hide combined data dictionary link
+      //and pass it to quota_config.js file
+      $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
+      $both_enabled = isset($enabledModules['redcap_cheat_blocker'])? true : false;
+
       $this->setJsSettings('quotaConfigFields', $dd_array);
       $this->setJsSettings('quotaConfigValidFieldNameOptions', $filtered_dd_array);
+      $this->setJsSettings('both_enabled', $both_enabled);
       $this->includeJs('js/quota_config.js');
       $this->includeJs('js/bootstrap-select.min.js');
       $this->includeCss('css/config.css');
