@@ -1,7 +1,7 @@
 {
  "name": "QuotaConfig",
  "namespace": "MUSC\\QuotaConfig",
- "description": "This is a description of the module, and will be displayed below the module name in the user interface.",
+ "description": "This module functions such that the research team specifies an enrollment minimum for each demographic characteristic of interest. If a demographic quota is filled, the participants are automatically told that are not eligible for the study and this module is applied at the point of study screening.",
  "authors": [
      {
           "name": "Andrew Cates",
@@ -25,7 +25,20 @@
     "redcap_data_entry_form_top",
     "redcap_survey_page_top"
   ],
-
+  "links": {
+    "project": [
+      {
+        "name": "Quota Config Data Dictionary",
+        "icon": "report",
+        "url": "QuotaConfig_data_dictionary.csv"
+      },
+      {
+        "name": "QuotaConfig & CheatBlocker Data Dictionary",
+        "icon": "report",
+        "url": "QuotaConfig_CheatBlocker_data_dictionary.csv"
+      }
+    ]
+  },
   "project-settings": [
     {
       "key": "descriptive_text",
