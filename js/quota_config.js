@@ -25,24 +25,14 @@ $(document).ready(function () {
     });
 
     $modal.on('show.bs.modal', function () {
+
         // Making sure we are overriding this modules's modal only.
         if ($(this).data('module') !== quotaConfigSettings.modulePrefix) {
             return;
         }
 
-        $(document).ajaxComplete(function () {
-            $modal.find("select[name*='field_name']").each(function () {
-                quotaConfigSettings.useOldVal = "true"
-                $(this).trigger('change');
-                quotaConfigSettings.useOldVal = "false"
-                cleanupFieldNameSelect();
-            });
-
-            $modal.find("select").each(function () {
-                $(this).attr('data-live-search', true);
-                $(this).selectpicker();
-            });
-        });
+        $(document).on('ajaxComplete', populate_dropdown);
+        $(document).on('click', ".external-modules-add-instance", populate_dropdown);
 
         /* Need to clear out the placeholder value that's assigned in the
          * 'rendered.bs.select hidden.bs.select' event handler so that the
@@ -119,7 +109,24 @@ $(document).ready(function () {
             }
         });
     });
+
+    function populate_dropdown(){
+      $modal.find("select[name*='field_name']").each(function () {
+        quotaConfigSettings.useOldVal = "true"
+        $(this).trigger('change');
+        quotaConfigSettings.useOldVal = "false"
+        cleanupFieldNameSelect();
+      });
+
+      $modal.find("select").each(function () {
+        $(this).attr('data-live-search', true);
+        $(this).selectpicker();
+      });
+    }
+
+
 });
+
 
 function cleanupFieldNameSelect() {
     // clean up the dropdown so that only fields that should be used for quotas are shown
