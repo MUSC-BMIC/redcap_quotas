@@ -30,12 +30,12 @@
       {
         "name": "Quota Config Data Dictionary",
         "icon": "report",
-        "url": "QuotaConfig_data_dictionary.csv"
+        "url": "download_quotaConfig.php"
       },
       {
         "name": "QuotaConfig & CheatBlocker Data Dictionary",
         "icon": "report",
-        "url": "QuotaConfig_CheatBlocker_data_dictionary.csv"
+        "url": "download_both.php"
       }
     ]
   },
