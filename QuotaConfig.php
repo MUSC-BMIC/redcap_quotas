@@ -74,8 +74,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
      // check if cheat_blocker plugin is enabled
     $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
-    if (isset($enabledModules['redcap_cheat_blocker'])){
-      $cheat_module = \ExternalModules\ExternalModules::getModuleInstance('redcap_cheat_blocker');
+    if (isset($enabledModules['cheat_blocker'])){
+      $cheat_module = \ExternalModules\ExternalModules::getModuleInstance('cheat_blocker');
 
       $cheat_config = $cheat_module->getProjectSettings();
       $cheatSettings = array(
@@ -99,7 +99,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     // If it's a new record, go to init_page_top
     $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
 
-    if (isset($enabledModules['redcap_cheat_blocker']) || is_null($record)){
+    if (isset($enabledModules['cheat_blocker']) || is_null($record)){
       $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
     }
     else {
