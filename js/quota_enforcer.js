@@ -14,10 +14,11 @@ setTimeout(function() {
           failed_data_count_check = data.failed_data_check_count;
           block_number = data.block_number;
           eligibility_message = data.eligibility_message;
-          set_confirmed_enrollment = data.set_confirmed_enrollment;
+          participant_enrolled = data.participant_enrolled;
 
           console.log(failed_data_count_check);
           console.log(block_number);
+          console.log(participant_enrolled);
 
           //$message = failed_data_count_check ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
           $message = eligibility_message ? quotaEnforcementSettings['eligibility_message'] : failed_data_count_check ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
@@ -33,9 +34,12 @@ setTimeout(function() {
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(1);
           }
 
-          // Set confirmed_enrollment to true if the quota is met and enrolled_confirmed = true
-          if(!failed_data_count_check && set_confirmed_enrollment) {
+          // Set confirmed_enrollment based on quota met and participant_enrolled
+          if(!failed_data_count_check && participant_enrolled) {
             $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr .data :input").val(1);
+          }
+          else if (failed_data_count_check || participant_enrolled == 0){
+            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr .data :input").val(0);
           }
 
 

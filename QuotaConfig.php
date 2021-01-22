@@ -115,9 +115,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $record_data = $data[$record][$event_id];
 
       if ($confirmed_enrollment != '') {
-        if ($record_data[$confirmed_enrollment] == 0) {
           $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
-        }
       }
       else {
         if ($record_data[$passed_quota_check] == 0) {
@@ -142,7 +140,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $passed_quota_check = $config['passed_quota_check']['value'];
     $confirmed_enrollment = $config['confirmed_enrollment']['value'];
     $filter_logic = "[$passed_quota_check] = '1'";
-    $set_confirmed_enrollment = false; //this variable sets the confirmed_enrollment variable only after the second stage of checking
+    $participant_enrolled = $params['participant_enrolled']['value'];
 
     if ($confirmed_enrollment != ''){
       $filter_logic .= " AND [$confirmed_enrollment] = '1'";
@@ -159,21 +157,21 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     }
 
     if($confirmed_enrollment != ''){
-      //If the record is marked as not eligible OR not confirmed, show rejected message
-      if($params['eligible_for_enrollment']['value'] == '0' || $params['enrolled_confirmed']['value'] == '0'){
-        return array(failed_data_check_count => true, block_number => -1);
+
+      //If the record is not confirmed yet, show eligibility message
+      if($participant_enrolled == ''){
+        return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
       }
 
-      //If the record is marked as eligible AND not confirmed yet, show eligibility message
-      if ($params['eligible_for_enrollment']['value'] != '0' && $params['enrolled_confirmed']['value'] != '1') {
-        return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
+      //If the record is marked as not confirmed, show rejected message
+      if($participant_enrolled == '0'){
+        return array(failed_data_check_count => true, block_number => -1, participant_enrolled => $participant_enrolled);
       }
 
       // If the record is marked as confirmed, then get a new block number
       // and set the Confirmed Enrollment variable
-      if ($params['enrolled_confirmed']['value'] == '1') {
+      if ($participant_enrolled == '1') {
         $block_number = $this->get_block_num_for_new_record($block_size, $filter_logic);
-        $set_confirmed_enrollment = true;
       }
 
     }
@@ -198,13 +196,13 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
 
     if (empty($quotas_not_matched_by_submission)) {
-      return array(failed_data_check_count => false, block_number => $block_number, set_confirmed_enrollment => $set_confirmed_enrollment);
+      return array(failed_data_check_count => false, block_number => $block_number, participant_enrolled => $participant_enrolled);
     }
 
     $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
     $failed_data_check_count = !empty($unreachable_quotas);
 
-    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, set_confirmed_enrollment => $set_confirmed_enrollment);
+    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, participant_enrolled => $participant_enrolled);
   }
 
   /* Iterates through the flat lists of fields and generates a map that's more
