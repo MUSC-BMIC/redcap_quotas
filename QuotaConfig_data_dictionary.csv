@@ -14,8 +14,7 @@ height,demographics,,text,Height (cm),,,number,130,215,,,,,,,,
 weight,demographics,,text,Weight (kilograms),,,integer,35,200,,,,,,,,
 bmi,demographics,,calc,BMI,"round(([weight]*10000)/(([height])^(2)),1)",,,,,,,,,,,,
 comments,demographics,General Comments,notes,Comments,,,,,,,,,,,,,
-passed_quota_check,demographics,,yesno,Passed Quota Check,,,,,,,,,,,,, @HIDDEN-SURVEY
-confirmed_enrollment,demographics,,yesno,Confirmed Enrollment,,,,,,,,,,,,, @HIDDEN-SURVEY
-block_number,demographics,,text,Block Number,,,,,,,,,,,,, @HIDDEN-SURVEY
-eligible_for_enrollment,demographics,,yesno,Eligible for Enrollment,,,,,,,,,,,,, @HIDDEN-SURVEY
-enrolled_confirmed,demographics,,yesno,Enrolled Confirmed,,,,,,,,,,,,, @HIDDEN-SURVEY
+passed_quota_check,demographics,,yesno,Passed Quota Check Indicator,,,,,,,,,,,,, @HIDDEN-SURVEY
+confirmed_enrollment,demographics,,yesno,Confirmed Enrollment Indicator,,,,,,,,,,,,, @HIDDEN
+block_number,demographics,,text,Block Number (completed via module),,,,,,,,,,,,, @HIDDEN-SURVEY
+participant_enrolled,demographics,,yesno,Participant Enrolled (completed by study staff),,,,,,,,,,,,, @HIDDEN-SURVEY
