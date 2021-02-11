@@ -1,7 +1,7 @@
 {
  "name": "QuotaConfig",
  "namespace": "MUSC\\QuotaConfig",
- "description": "This module functions such that the research team specifies an enrollment minimum for each demographic characteristic of interest. If a demographic quota is filled, the participants are automatically told that are not eligible for the study and this module is applied at the point of study screening.",
+ "description": "This module allows the research team to specify an enrollment minimum for each demographic characteristic of interest for the study as a whole and/or for blocks of participants.  If a demographic quota is filled, the module can either:  1) automatically inform potential participants at the point of screening that they are ineligible for the study or 2) allow study staff to delay the quota check until the time of enrollment.",
  "authors": [
      {
           "name": "Andrew Cates",
@@ -36,6 +36,11 @@
         "name": "QuotaConfig & CheatBlocker Data Dictionary",
         "icon": "report",
         "url": "download_both.php"
+      },
+      {
+        "name": "QuotaConfig & CheatBlocker Documentation (Combined)",
+        "icon": "report",
+        "url": "download_both_documentation.php"
       }
     ]
   },
