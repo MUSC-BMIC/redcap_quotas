@@ -2,10 +2,17 @@ $(document).ready(function () {
     var $modal = $('#external-modules-configure-modal');
 
     //Show/Hide combined data dictionary file
-    if(both_enabled)
-       $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'block';
-    else
-       $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[1].style.display = 'none';
+    if(both_enabled){
+        $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'block';
+        var $combined_doc_link = $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div a')[3];
+        $combined_doc_link.setAttribute('target', '_blank'); //to open the combined document in new tab
+    }
+
+    else{
+        $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[1].style.display = 'none';
+        $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'none';
+    }
+
 
     $modal.on('DOMSubtreeModified', function (e) {
 
