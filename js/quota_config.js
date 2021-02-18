@@ -1,16 +1,21 @@
 $(document).ready(function () {
     var $modal = $('#external-modules-configure-modal');
 
-    //Show/Hide combined data dictionary file
     if(both_enabled){
+        //Show combined data dictionary file
         $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'block';
-        var $combined_doc_link = $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div a')[3];
-        $combined_doc_link.setAttribute('target', '_blank'); //to open the combined document in new tab
+
+        //Show combined documentation & hide cheat documentation
+        var quota_doc_link = $(this).find('#external-modules-enabled tr[data-module=quota_config] .external-modules-byline').find('a')[0];
+        quota_doc_link.innerHTML = '<i class="fas fa-file" style="margin-right: 5px"></i>View Documentation (QuotaConfig & CheatBlocker Combined)';
+        quota_doc_link.href = both_document_path;
+
+        var cheat_doc_link = $(this).find('#external-modules-enabled tr[data-module=cheat_blocker] .external-modules-byline').find('a')[0];
+        cheat_doc_link.style.display = 'none';
     }
 
     else{
         $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[1].style.display = 'none';
-        $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'none';
     }
 
 

@@ -28,10 +28,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       //and pass it to quota_config.js file
       $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
       $both_enabled = isset($enabledModules['cheat_blocker'])? true : false;
+      $both_document_path = $this->getURL('Instuctions_for_CheatBlocker_and_Quota_Combined.pdf');
 
       $this->setJsSettings('quotaConfigFields', $dd_array);
       $this->setJsSettings('quotaConfigValidFieldNameOptions', $filtered_dd_array);
       $this->setJsSettings('both_enabled', $both_enabled);
+      $this->setJSSettings('both_document_path', $both_document_path);
       $this->includeJs('js/quota_config.js');
       $this->includeJs('js/bootstrap-select.min.js');
       $this->includeCss('css/config.css');
