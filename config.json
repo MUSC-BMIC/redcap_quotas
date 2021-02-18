@@ -36,11 +36,6 @@
         "name": "QuotaConfig & CheatBlocker Data Dictionary",
         "icon": "report",
         "url": "download_both.php"
-      },
-      {
-        "name": "QuotaConfig & CheatBlocker Documentation (Combined)",
-        "icon": "report",
-        "url": "download_both_documentation.php"
       }
     ]
   },
