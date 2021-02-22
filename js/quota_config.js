@@ -2,8 +2,10 @@ $(document).ready(function () {
     var $modal = $('#external-modules-configure-modal');
 
     if(both_enabled){
-        //Show combined data dictionary file
+        //Show combined data dictionary file & hide individual documentation
         $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[2].style.display = 'block';
+        $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[1].style.display = 'none';
+        $(this).find('#external_modules_panel .x-panel-body .menubox .menubox').find('div')[0].style.display = 'none';
 
         //Show combined documentation & hide cheat documentation
         var quota_doc_link = $(this).find('#external-modules-enabled tr[data-module=quota_config] .external-modules-byline').find('a')[0];

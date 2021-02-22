@@ -33,7 +33,7 @@
         "url": "download_quotaConfig.php"
       },
       {
-        "name": "QuotaConfig & CheatBlocker Data Dictionary",
+        "name": "QuotaConfig & CheatBlocker Combined Data Dictionary",
         "icon": "report",
         "url": "download_both.php"
       }
