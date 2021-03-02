@@ -8,6 +8,8 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
   // this only pertains to the setup page for QuotaConfig
   function redcap_every_page_top(int $project_id) {
+    $this->hideCombinedDataDictionaryLink(); //this hides the combined data dictionary link mentioned in config.json
+
     if (strpos(PAGE, 'ExternalModules/manager/project.php') !== false) {
       $this->setJsSettings('quotaConfigSettings', array('modulePrefix' => $this->PREFIX, 'useOldVal' => 'false'));
 
@@ -93,45 +95,61 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   }
 
   function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
-    $config = $this->getProjectSettings();
-    $passed_quota_check = $config['passed_quota_check']['value'];
-    $confirmed_enrollment = $config['confirmed_enrollment']['value'];
 
-    // Check if cheat_blocker plugin is enabled, go to init_page_top if enabled
-    // If it's a new record, go to init_page_top
-    $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
-
-    if (isset($enabledModules['cheat_blocker']) || is_null($record)){
+    $quota_check_yn = $this->run_quota_check_for_selected_instrument_and_event($record, $event_id, $instrument);
+    if($quota_check_yn){
       $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
-    }
-    else {
-      $fields = array($passed_quota_check);
-
-      if ($confirmed_enrollment != '') {
-        array_push($fields, $confirmed_enrollment);
-      }
-
-      $params = array('return_format' => 'array', 'records' => $record, 'fields' => $fields);
-
-      $data = REDCap::getData($params);
-      $record_data = $data[$record][$event_id];
-
-      if ($confirmed_enrollment != '') {
-          $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
-      }
-      else {
-        if ($record_data[$passed_quota_check] == 0) {
-          $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
-        }
-      }
-
-
     }
 
   }
 
   function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
-    $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+
+    $quota_check_yn = $this->run_quota_check_for_selected_instrument_and_event($record, $event_id, $instrument);
+    if($quota_check_yn){
+      $this->init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance);
+    }
+  }
+
+  function run_quota_check_for_selected_instrument_and_event($record, $event_id, $instrument){
+
+    $data = REDCap::getData('array', $record);
+    $record_data = $data[$record][$event_id];
+    $instrument_yn = false; $event_yn = false;
+
+    //Check for specific instrument name
+    //Find the instrument that has the passed_quota_check variable
+    //Return true if the current instrument has the variable
+    $instrument_names = REDCap::getInstrumentNames();
+
+    foreach ($instrument_names as $instrument_name=>$instrument_label){
+      $instrument_fields = REDCap::getFieldNames($instrument_name);
+      foreach ($instrument_fields as $field_name=>$field_label){
+        if($field_label == 'passed_quota_check' && $instrument == $instrument_name){
+          $instrument_yn = true;
+        }
+      }
+    }
+
+    //Check for specific event name
+    //If events are NOT specified (which means its not a longitudinal project), no checks are required
+    //If there are events, then run the quota check for only the baseline event
+
+    if (!REDCap::isLongitudinal()){
+      $event_yn = true;
+    }
+    $events = REDCap::getEventNames(false, true);
+    $first_event_id = array_shift(array_keys($events));//Get the first event which is the baseline event
+    if($event_id == $first_event_id){
+      $event_yn = true;
+    }
+
+    if($instrument_yn && $event_yn){
+      return true;
+    }
+
+    return false;
+
   }
 
   function failed_data_count_check($params) {
@@ -370,6 +388,25 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $params = array('return_format' => 'array', 'filterLogic' => $filter_logic, 'fields' => array('record_id'));
     $data = REDCap::getData($params);
     return count($data);
+  }
+
+  protected function hideCombinedDataDictionaryLink(){
+    $enabledModules = \ExternalModules\ExternalModules::getEnabledModules($_GET['pid']);
+    $both_modules_enabled = isset($enabledModules['cheat_blocker'])? true : false;
+
+    echo '<script type="text/javascript">',
+     '$(document).ready(function () {
+      if('.json_encode($both_modules_enabled). '){
+        $(this).find("#external_modules_panel .x-panel-body .menubox .menubox").find("div")[2].style.display = "block";
+        $(this).find("#external_modules_panel .x-panel-body .menubox .menubox").find("div")[1].style.display = "none";
+        $(this).find("#external_modules_panel .x-panel-body .menubox .menubox").find("div")[0].style.display = "none";
+      }
+      else{
+        $(this).find("#external_modules_panel .x-panel-body .menubox .menubox").find("div")[1].style.display = "none";
+      }
+
+    });',
+     '</script>';
   }
 
   protected function setJsSettings($var, $settings) {
