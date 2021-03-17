@@ -345,10 +345,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
   function unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission) {
     $unreachable_quotas = array();
+    $total_data_count = $this->dataCount($filter_logic);
+    $spots_remaining = $block_size - $total_data_count; //use this to start with and this gets updated inside the loop
+
     for ($i = 0; $i < count($quotas_not_matched_by_submission); $i++) {
       $quota_index = $quotas_not_matched_by_submission[$i];
       $quota = $quotas[$quota_index];
-      $total_data_count = $this->dataCount($filter_logic);
       $quota_filter_logic = $filter_logic;
       $field_quantity = $quota['field_quantity'];
       $field_quantity_type= $quota['field_quantity_type'];
@@ -374,9 +376,9 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       $existing_quota_data_count = $this->dataCount($quota_filter_logic);
       $num_still_required = $field_quantity - $existing_quota_data_count;
-      $spots_remaining = $block_size - $total_data_count;
+      $spots_remaining = $spots_remaining - $num_still_required;
 
-      if ($spots_remaining <= $num_still_required) {
+      if ($spots_remaining < 1) {
         array_push($unreachable_quotas, $quota_index);
       }
     }

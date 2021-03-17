@@ -54,33 +54,33 @@ setTimeout(function() {
 
           //save quota_config data
           if (failed_data_count_check) {
-            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(0);// Set passed_quota_check to false
+            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(0);// Set passed_quota_check to false
           }
           else {
-            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(1);// Set passed_quota_check to true
+            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(1);// Set passed_quota_check to true
           }
 
           // Set confirmed_enrollment based on quota met and participant_enrolled
           if(!failed_data_count_check && participant_enrolled) {
-            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr .data :input").val(1);
+            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(1);
           }
           else if (failed_data_count_check || participant_enrolled == 0){
-            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr .data :input").val(0);
+            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(0);
           }
 
-          $("#block_number-tr .data :input").val(block_number);
+          $("#block_number-tr :input").val(block_number);
 
 
           //save cheat_blocker data
-          $("#duplicate_check-tr .data :input").val(is_duplicate);
-          $("#pot_duplicate_record_ids-tr .data :input").val(potential_duplicate_record_ids);
-          $("#potential_failed_criteria-tr .data :input").val(potential_failed_criteria);
-          $("#duplicate_record_ids-tr .data :input").val(duplicate_record_ids);
-          $("#failed_criteria-tr .data :input").val(failed_criteria);
-          $("#duplicates_count-tr .data :input").val(duplicates_count);
+          $("#duplicate_check-tr :input").val(is_duplicate);
+          $("#pot_duplicate_record_ids-tr :input").val(potential_duplicate_record_ids);
+          $("#potential_failed_criteria-tr :input").val(potential_failed_criteria);
+          $("#duplicate_record_ids-tr :input").val(duplicate_record_ids);
+          $("#failed_criteria-tr :input").val(failed_criteria);
+          $("#duplicates_count-tr :input").val(duplicates_count);
 
           if(data_entry_time){
-            $("#data_entry_time-tr .data :input").val(data_entry_time);
+            $("#data_entry_time-tr :input").val(data_entry_time);
           }
 
 
