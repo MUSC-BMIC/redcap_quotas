@@ -27,23 +27,23 @@ setTimeout(function() {
 
           if (failed_data_count_check) {
             // Set passed_quota_check to false
-            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(0);
+            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(0);
           }
           else {
             // Set passed_quota_check to true
-            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr .data :input").val(1);
+            $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(1);
           }
 
           // Set confirmed_enrollment based on quota met and participant_enrolled
           if(!failed_data_count_check && participant_enrolled) {
-            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr .data :input").val(1);
+            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(1);
           }
           else if (failed_data_count_check || participant_enrolled == 0){
-            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr .data :input").val(0);
+            $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(0);
           }
 
 
-          $("#block_number-tr .data :input").val(block_number);
+          $("#block_number-tr :input").val(block_number);
 
           e.preventDefault();
           e.stopPropagation();
