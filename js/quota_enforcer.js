@@ -2,7 +2,7 @@ setTimeout(function() {
   $(function() {
 
     function enforceQuota(e) {
-      $failed_data_count_check = false;
+      // $failed_data_check_count = false;
       $form_data = $('form').serialize() + '&event_id=' + event_id;
 
       $.get({
@@ -11,21 +11,27 @@ setTimeout(function() {
         data: $form_data,
         success: function(data) {
           data = JSON.parse(data);
-          failed_data_count_check = data.failed_data_check_count;
+          failed_data_check_count = data.failed_data_check_count;
           block_number = data.block_number;
           eligibility_message = data.eligibility_message;
-          participant_enrolled = data.participant_enrolled;
+          confirmed_enrollment = data.confirmed_enrollment;
 
-          console.log(failed_data_count_check);
+          console.log(failed_data_check_count);
           console.log(block_number);
-          console.log(participant_enrolled);
+          console.log(confirmed_enrollment);
 
-          //$message = failed_data_count_check ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
-          $message = eligibility_message ? quotaEnforcementSettings['eligibility_message'] : failed_data_count_check ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
+          //variable to check passed quota & confirmed_enrollment
+          enrolled_yn = false;
+          if((confirmed_enrollment == 1) || (confirmed_enrollment != 0 && !failed_data_check_count)){
+            enrolled_yn = true;
+          }
+
+          //$message = eligibility_message ? quotaEnforcementSettings['eligibility_message'] : failed_data_check_count ? quotaEnforcementSettings['rejected'] : quotaEnforcementSettings['accepted'];
+          $message = eligibility_message ? quotaEnforcementSettings['eligibility_message'] : enrolled_yn ? quotaEnforcementSettings['accepted'] : quotaEnforcementSettings['rejected'];
           $("#quota-modal .modal-body").html($message);
           $('#quota-modal').modal('show');
 
-          if (failed_data_count_check) {
+          if (failed_data_check_count) {
             // Set passed_quota_check to false
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(0);
           }
@@ -34,11 +40,11 @@ setTimeout(function() {
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(1);
           }
 
-          // Set confirmed_enrollment based on quota met and participant_enrolled
-          if(!failed_data_count_check && participant_enrolled) {
+          // Set confirmed_enrollment variable
+          if(confirmed_enrollment == 1) {
             $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(1);
           }
-          else if (failed_data_count_check || participant_enrolled == 0){
+          else if (confirmed_enrollment == 0){
             $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(0);
           }
 
