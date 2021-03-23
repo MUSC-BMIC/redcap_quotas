@@ -14,10 +14,10 @@ setTimeout(function() {
           data = JSON.parse(data);
 
           //data from quota_config module
-          failed_data_count_check = data.failed_data_check_count;
+          failed_data_check_count = data.failed_data_check_count;
           block_number = data.block_number;
           quota_eligibility_message = data.eligibility_message;
-          participant_enrolled = data.participant_enrolled;
+          confirmed_enrollment = data.confirmed_enrollment;
 
           //data from cheat_blocker module
           is_duplicate = data.is_duplicate;
@@ -33,6 +33,12 @@ setTimeout(function() {
 
           console.log(data);
 
+          //variable to check passed quota & confirmed_enrollment
+          enrolled_yn = false;
+          if((confirmed_enrollment == 1) || (confirmed_enrollment != 0 && !failed_data_check_count)){
+            enrolled_yn = true;
+          }
+
           //Checking all the different scenarios from quota config & cheat blocker modules
           //Potential duplicate message shows up only for delayed enrollment of cheat blocker plugin
           //If delayed enrollment is enabled in one module or both, then show eligibility message
@@ -42,29 +48,29 @@ setTimeout(function() {
           else if(quota_eligibility_message || cheat_eligibility_message){
             $message = quotaEnforcementSettings['eligibility_message'];
           }
-          else if (failed_data_count_check || is_duplicate){
-            $message = quotaEnforcementSettings['rejected'];
+          else if (enrolled_yn && !is_duplicate){
+            $message = quotaEnforcementSettings['accepted'];
           }
           else{
-            $message = quotaEnforcementSettings['accepted'];
+            $message = quotaEnforcementSettings['rejected'];
           }
 
           $("#quota-modal .modal-body").html($message);
           $('#quota-modal').modal('show');
 
           //save quota_config data
-          if (failed_data_count_check) {
+          if (failed_data_check_count) {
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(0);// Set passed_quota_check to false
           }
           else {
             $("#" + quotaEnforcementSettings['passed_quota_check'] + "-tr :input").val(1);// Set passed_quota_check to true
           }
 
-          // Set confirmed_enrollment based on quota met and participant_enrolled
-          if(!failed_data_count_check && participant_enrolled) {
+          // Set confirmed_enrollment variable
+          if(confirmed_enrollment == 1) {
             $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(1);
           }
-          else if (failed_data_count_check || participant_enrolled == 0){
+          else if (confirmed_enrollment == 0){
             $("#" + quotaEnforcementSettings['confirmed_enrollment'] + "-tr :input").val(0);
           }
 

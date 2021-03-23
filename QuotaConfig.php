@@ -176,26 +176,6 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       return array(failed_data_check_count => true, block_number => -1);
     }
 
-    if($confirmed_enrollment != ''){
-
-      //If the record is not confirmed yet, show eligibility message
-      if($participant_enrolled == ''){
-        return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
-      }
-
-      //If the record is marked as not confirmed, show rejected message
-      if($participant_enrolled == '0'){
-        return array(failed_data_check_count => true, block_number => -1, participant_enrolled => $participant_enrolled);
-      }
-
-      // If the record is marked as confirmed, then get a new block number
-      // and set the Confirmed Enrollment variable
-      if ($participant_enrolled == '1') {
-        $block_number = $this->get_block_num_for_new_record($block_size, $filter_logic);
-      }
-
-    }
-
     // Check to see if block size is defined
     if ($block_size != '') {
       // If the block number is already set, continue to use it, other wise calculate
@@ -212,17 +192,47 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $block_size = $maximum_sample_size;
     }
 
+    if($confirmed_enrollment != ''){
+      //If quota is met and participant enrolled is 1, then confirmed_enrollment is 1
+      //For other scenarios, confirmed_enrollment is 0
+
+      if($participant_enrolled != ''){
+        $passed_quota = $params['passed_quota_check']['value'];//this value was already saved when the record came in
+        if($passed_quota == 1 && $participant_enrolled == 1){
+          return array(failed_data_check_count => !$passed_quota, block_number => $block_number, confirmed_enrollment => true);
+        }
+        else{
+          return array(failed_data_check_count => !$passed_quota, block_number => $block_number, confirmed_enrollment => false);
+        }
+      }
+
+      $quotas = $this->generate_quotas_map($config);
+      $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
+
+      if (empty($quotas_not_matched_by_submission)) {
+        return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
+      }
+
+      $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
+      $failed_data_check_count = !empty($unreachable_quotas);
+
+      return array(failed_data_check_count => $failed_data_check_count, block_number => -1, eligibility_message => true);
+
+    }
+
+
     $quotas = $this->generate_quotas_map($config);
     $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
 
     if (empty($quotas_not_matched_by_submission)) {
-      return array(failed_data_check_count => false, block_number => $block_number, participant_enrolled => $participant_enrolled);
+      return array(failed_data_check_count => false, block_number => $block_number);
     }
 
     $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
     $failed_data_check_count = !empty($unreachable_quotas);
 
-    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, participant_enrolled => $participant_enrolled);
+    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number);
+
   }
 
   /* Iterates through the flat lists of fields and generates a map that's more
