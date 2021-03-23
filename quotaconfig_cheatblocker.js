@@ -31,8 +31,6 @@ setTimeout(function() {
           duplicates_count = data.duplicates_count;
           data_entry_time = data.data_entry_time;
 
-          console.log(data);
-
           //variable to check passed quota & confirmed_enrollment
           enrolled_yn = false;
           if((confirmed_enrollment == 1) || (confirmed_enrollment != 0 && !failed_data_check_count)){

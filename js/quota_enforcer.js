@@ -16,10 +16,6 @@ setTimeout(function() {
           eligibility_message = data.eligibility_message;
           confirmed_enrollment = data.confirmed_enrollment;
 
-          console.log(failed_data_check_count);
-          console.log(block_number);
-          console.log(confirmed_enrollment);
-
           //variable to check passed quota & confirmed_enrollment
           enrolled_yn = false;
           if((confirmed_enrollment == 1) || (confirmed_enrollment != 0 && !failed_data_check_count)){
