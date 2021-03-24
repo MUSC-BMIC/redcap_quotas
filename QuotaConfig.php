@@ -192,35 +192,46 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
       $block_size = $maximum_sample_size;
     }
 
+    //DELAYED ENROLLMENT//
     if($confirmed_enrollment != ''){
+
       //If quota is met and participant enrolled is 1, then confirmed_enrollment is 1
       //For other scenarios, confirmed_enrollment is 0
-
-      if($participant_enrolled != ''){
-        $passed_quota = $params['passed_quota_check']['value'];//this value was already saved when the record came in
-        if($passed_quota == 1 && $participant_enrolled == 1){
-          return array(failed_data_check_count => !$passed_quota, block_number => $block_number, confirmed_enrollment => true);
-        }
-        else{
-          return array(failed_data_check_count => !$passed_quota, block_number => $block_number, confirmed_enrollment => false);
-        }
-      }
 
       $quotas = $this->generate_quotas_map($config);
       $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
 
       if (empty($quotas_not_matched_by_submission)) {
-        return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
+        // participant_enrolled is null when the record comes in for the first time
+        // show eligibility message
+        if($participant_enrolled == ''){
+          return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
+        }
+        //When the admin marks the participant_enrolled, confirmed_enrollment is based on participant_enrolled
+        else {
+          return array(failed_data_check_count => false, block_number => $block_number, confirmed_enrollment => $participant_enrolled);
+        }
       }
 
       $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
       $failed_data_check_count = !empty($unreachable_quotas);
 
-      return array(failed_data_check_count => $failed_data_check_count, block_number => -1, eligibility_message => true);
+      //Show eligibility message when the record comes in for the first time
+      if($participant_enrolled == ''){
+        return array(failed_data_check_count => $failed_data_check_count, block_number => -1, eligibility_message => true);
+      }
+      //If quota is met and participant enrolled is 1, then confirmed_enrollment is 1
+      //For other scenarios, confirmed_enrollment is 0
+      else if(!$failed_data_check_count && $participant_enrolled) {
+        return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, confirmed_enrollment => true);
+      }
+      else{
+        return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, confirmed_enrollment => false);
+      }
 
     }
 
-
+    //IMMEDIATE ENROLLMENT//
     $quotas = $this->generate_quotas_map($config);
     $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
 
