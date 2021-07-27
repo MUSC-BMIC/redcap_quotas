@@ -19,7 +19,7 @@
           "institution": "Medical University of South Carolina"
       }
   ],
-  "no-auth-pages": ["quota_enforcer"],
+  "no-auth-pages": ["download_quotaConfig", "download_both"],
   "permissions": [
     "redcap_every_page_top",
     "redcap_data_entry_form_top",
@@ -30,12 +30,12 @@
       {
         "name": "Quota Config Data Dictionary",
         "icon": "report",
-        "url": "download_quotaConfig.php"
+        "url": "download_quotaConfig.php?NOAUTH"
       },
       {
         "name": "QuotaConfig & CheatBlocker Combined Data Dictionary",
         "icon": "report",
-        "url": "download_both.php"
+        "url": "download_both.php?NOAUTH"
       }
     ]
   },
