@@ -65,7 +65,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   </div>";
 
     $qes = array(
-      'url' => $this->getUrl('quota_enforcer.php', true, true),
+      'url' => $this->getUrl('quota_enforcer.php', false, true),
       'accepted' => $config['accepted']['value'],
       'rejected' => $config['rejected']['value'],
       'eligibility_message' => $config['eligibility_message']['value'],
