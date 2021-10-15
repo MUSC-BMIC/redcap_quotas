@@ -19,7 +19,7 @@
           "institution": "Medical University of South Carolina"
       }
   ],
-  "no-auth-pages": ["download_quotaConfig", "download_both"],
+  "no-auth-pages": ["quota_enforcer", "download_quotaConfig", "download_both"],
   "permissions": [
     "redcap_every_page_top",
     "redcap_data_entry_form_top",
