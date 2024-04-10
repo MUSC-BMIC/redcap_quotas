@@ -46,7 +46,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   function init_page_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
   // this pertains to data entry forms and surveys
     $config = $this->getProjectSettings();
-    $modal_title = $config['modal_title']['value'];
+    $modal_title = $config['modal_title'];
 
     echo "
   <div id='quota-modal' class='modal fade' role='dialog' data-backdrop='static'>
@@ -66,11 +66,11 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
     $qes = array(
       'url' => $this->getUrl('quota_enforcer.php', true, true),
-      'accepted' => $config['accepted']['value'],
-      'rejected' => $config['rejected']['value'],
-      'eligibility_message' => $config['eligibility_message']['value'],
-      'passed_quota_check' => $config['passed_quota_check']['value'],
-      'confirmed_enrollment' => $config['confirmed_enrollment']['value']
+      'accepted' => $config['accepted'],
+      'rejected' => $config['rejected'],
+      'eligibility_message' => $config['eligibility_message'],
+      'passed_quota_check' => $config['passed_quota_check'],
+      'confirmed_enrollment' => $config['confirmed_enrollment']
     );
 
     $this->setJsSettings('quotaEnforcementSettings', $qes);
@@ -83,7 +83,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       $cheat_config = $cheat_module->getProjectSettings();
       $cheatSettings = array(
-        'potential_duplicate_message' => $cheat_config['potential_duplicate_message']['value']
+        'potential_duplicate_message' => $cheat_config['potential_duplicate_message']
       );
 
       $this->setJsSettings('cheatSettings', $cheatSettings);
@@ -137,11 +137,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
     if (!REDCap::isLongitudinal()){
       $event_yn = true;
-    }
-    $events = REDCap::getEventNames(false, true);
-    $first_event_id = array_shift(array_keys($events));//Get the first event which is the baseline event
-    if($event_id == $first_event_id){
-      $event_yn = true;
+    } else {
+      $events = REDCap::getEventNames(false, true);
+      $first_event_id = array_shift(array_keys($events));//Get the first event which is the baseline event
+      if($event_id == $first_event_id){
+        $event_yn = true;
+      }
     }
 
     if($instrument_yn && $event_yn){
@@ -155,12 +156,12 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
   function failed_data_count_check($params) {
     $config = $this->getProjectSettings();
 
-    $maximum_sample_size = $config['maximum_sample_size']['value'];
-    $block_size = $config['block_size']['value'];
-    $passed_quota_check = $config['passed_quota_check']['value'];
-    $confirmed_enrollment = $config['confirmed_enrollment']['value'];
+    $maximum_sample_size = $config['maximum_sample_size'];
+    $block_size = $config['block_size'];
+    $passed_quota_check = $config['passed_quota_check'];
+    $confirmed_enrollment = $config['confirmed_enrollment'];
     $filter_logic = "[$passed_quota_check] = '1'";
-    $participant_enrolled = $params['participant_enrolled']['value'];
+    $participant_enrolled = $params['participant_enrolled'];
 
     if ($confirmed_enrollment != ''){
       $filter_logic .= " AND [$confirmed_enrollment] = '1'";
@@ -173,7 +174,7 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     // If the maximum sample size has already been reached then no more
     // submissions should be accepted
     if ($maximum_sample_size_reached) {
-      return array(failed_data_check_count => true, block_number => -1);
+      return array('failed_data_check_count' => true, 'block_number' => -1);
     }
 
     // Check to see if block size is defined
@@ -205,11 +206,11 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
         // participant_enrolled is null when the record comes in for the first time
         // show eligibility message
         if($participant_enrolled == ''){
-          return array(failed_data_check_count => false, block_number => -1, eligibility_message => true);
+          return array('failed_data_check_count' => false, 'block_number' => -1, 'eligibility_message' => true);
         }
         //When the admin marks the participant_enrolled, confirmed_enrollment is based on participant_enrolled
         else {
-          return array(failed_data_check_count => false, block_number => $block_number, confirmed_enrollment => $participant_enrolled);
+          return array('failed_data_check_count' => false, 'block_number' => $block_number, 'confirmed_enrollment' => $participant_enrolled);
         }
       }
 
@@ -218,15 +219,15 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
 
       //Show eligibility message when the record comes in for the first time
       if($participant_enrolled == ''){
-        return array(failed_data_check_count => $failed_data_check_count, block_number => -1, eligibility_message => true);
+        return array('failed_data_check_count' => $failed_data_check_count, 'block_number' => -1, 'eligibility_message' => true);
       }
       //If quota is met and participant enrolled is 1, then confirmed_enrollment is 1
       //For other scenarios, confirmed_enrollment is 0
       else if(!$failed_data_check_count && $participant_enrolled) {
-        return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, confirmed_enrollment => true);
+        return array('failed_data_check_count' => $failed_data_check_count, 'block_number' => $block_number, 'confirmed_enrollment' => true);
       }
       else{
-        return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number, confirmed_enrollment => false);
+        return array('failed_data_check_count' => $failed_data_check_count, 'block_number' => $block_number, 'confirmed_enrollment' => false);
       }
 
     }
@@ -236,13 +237,13 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
     $quotas_not_matched_by_submission = $this->quotas_not_matched_by_submission($quotas, $params);
 
     if (empty($quotas_not_matched_by_submission)) {
-      return array(failed_data_check_count => false, block_number => $block_number);
+      return array('failed_data_check_count' => false, 'block_number' => $block_number);
     }
 
     $unreachable_quotas = $this->unreachable_quotas($quotas, $block_size, $filter_logic, $quotas_not_matched_by_submission);
     $failed_data_check_count = !empty($unreachable_quotas);
 
-    return array(failed_data_check_count => $failed_data_check_count, block_number => $block_number);
+    return array('failed_data_check_count' => $failed_data_check_count, 'block_number' => $block_number);
 
   }
 
@@ -268,11 +269,11 @@ class QuotaConfig extends \ExternalModules\AbstractExternalModule {
    * ]
    */
   function generate_quotas_map($config) {
-    $field_names = $config['field_name']['value'];
-    $fields_selected = $config['field_selected']['value'];
-    $field_quantities = $config['field_quantity']['value'];
-    $field_quantity_types = $config['field_quantity_type']['value'];
-    $field_negated = $config['field_negated']['value'];
+    $field_names = $config['field_name'];
+    $fields_selected = $config['field_selected'];
+    $field_quantities = $config['field_quantity'];
+    $field_quantity_types = $config['field_quantity_type'];
+    $field_negated = $config['field_negated'];
 
     $quotas = array();
 

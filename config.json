@@ -1,6 +1,7 @@
 {
  "name": "QuotaConfig",
  "namespace": "MUSC\\QuotaConfig",
+ "framework-version": 13,
  "description": "This module allows the research team to specify an enrollment minimum for each demographic characteristic of interest for the study as a whole and/or for blocks of participants.  If a demographic quota is filled, the module can either:  1) automatically inform potential participants at the point of screening that they are ineligible for the study or 2) allow study staff to delay the quota check until the time of enrollment.",
  "authors": [
      {
@@ -20,11 +21,6 @@
       }
   ],
   "no-auth-pages": ["quota_enforcer", "download_quotaConfig", "download_both"],
-  "permissions": [
-    "redcap_every_page_top",
-    "redcap_data_entry_form_top",
-    "redcap_survey_page_top"
-  ],
   "links": {
     "project": [
       {
