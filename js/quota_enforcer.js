@@ -1,14 +1,16 @@
 $(document).ready(function () {
+
   var submitBtns = $("[id^=submit-btn-save], [name^=submit-btn-save]");
 
   submitBtns.prop("onclick", null).attr("onclick", null).off("click");
   submitBtns.attr('onclick', "enforceQuota(event)");
+
 });
 
 function enforceQuota(e) {
   // $failed_data_check_count = false;
   $form_data = $('form').serialize() + '&event_id=' + event_id;
-
+  
   $.get({
     url: quotaEnforcementSettings.url,
     async: false,

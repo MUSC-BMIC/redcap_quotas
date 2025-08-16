@@ -42,6 +42,11 @@
       "type": "descriptive"
     },
     {
+      "key": "enable_logging",
+      "name": "Enable Logging",
+      "type": "checkbox"
+    },
+    {
       "key": "passed_quota_check",
       "name": "Passed Quota Check Indicator",
       "required": true,
